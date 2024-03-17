@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\WindowsSystem-Backend.props" />
+</Project>

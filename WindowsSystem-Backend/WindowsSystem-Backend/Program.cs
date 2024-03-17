@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using WindowsSystem_Backend.Models;
+
 namespace WindowsSystem_Backend
 {
     public class Program
@@ -5,6 +8,10 @@ namespace WindowsSystem_Backend
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            
+            // Connectin to DB
+            builder.Services.AddDbContext<DataContext>(options =>
+               options.UseSqlServer(builder.Configuration.GetConnectionString("DataContext")));
 
             // Add services to the container.
 

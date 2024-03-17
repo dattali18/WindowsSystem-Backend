@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "Opz9UzsAWwhv20glgVTjre3oRc8NNhWIu5JaN5mcwks=",
+  "Source": "WindowsSystem-Backend",
+  "BasePath": "_content/WindowsSystem-Backend",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

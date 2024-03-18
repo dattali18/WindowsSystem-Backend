@@ -1,6 +1,6 @@
 ﻿namespace WindowsSystem_Backend.BL.DTO
 {
-    public class GetMovieDTO
+    public class GetMovieDto
     {
         public int Id { get; set; }
 

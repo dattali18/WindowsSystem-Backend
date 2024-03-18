@@ -6,7 +6,6 @@ using WindowsSystem_Backend.BL.DTO;
 using WindowsSystem_Backend.DAL;
 using WindowsSystem_Backend.DO;
 using WindowsSystem_Backend.Models;
-using WindowsSystem_Backend.BL.BO;
 
 namespace WindowsSystem_Backend.Controllers
 {
@@ -23,7 +22,7 @@ namespace WindowsSystem_Backend.Controllers
 
         // GET - /api/libraries/
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GetLibreryDTO>>> GetLibraries()
+        public async Task<ActionResult<IEnumerable<GetLibreryDto>>> GetLibraries()
         {
             if (_dbContext == null)
             {
@@ -35,7 +34,7 @@ namespace WindowsSystem_Backend.Controllers
                 .Include(l => l.TvSeries)
                 .ToListAsync();
 
-            List<GetLibreryDTO> librariesDto = (
+            List<GetLibreryDto> librariesDto = (
                     from library in libraries
                     select BlLibrary.getLibreryDTOs(library, library.Movies, library.TvSeries)
                 ).ToList();
@@ -69,7 +68,7 @@ namespace WindowsSystem_Backend.Controllers
         }
 
         [HttpGet("{id}/movies")]
-        public async Task<ActionResult<IEnumerable<Media>>> GetLibraryMovies(int id)
+        public async Task<ActionResult<IEnumerable<MediaDto>>> GetLibraryMovies(int id)
         {
             if (_dbContext == null)
             {
@@ -87,7 +86,7 @@ namespace WindowsSystem_Backend.Controllers
 
             var movies = library.Movies;
 
-            List<Media> media = (
+            List<MediaDto> media = (
                 from movie in movies
                 select BlMovie.getMediaFromMovie(movie)
             ).ToList();
@@ -113,7 +112,7 @@ namespace WindowsSystem_Backend.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Library>> CreateLibrary(CreateLibraryDTO createLibraryDto)
+        public async Task<ActionResult<Library>> CreateLibrary(CreateLibraryDto createLibraryDto)
         {
             if (_dbContext == null)
             {

@@ -1,10 +1,11 @@
 ﻿using Newtonsoft.Json;
+using WindowsSystem_Backend.BL.DTO;
 
 namespace WindowsSystem_Backend.BL
 {
     public class BlJsonConversion
     {
-        public static IEnumerable<BO.Media>? GetMovieObjFromJson(string json)
+        public static IEnumerable<MediaDto>? GetMovieObjFromJson(string json)
         {
             return JsonMovieDeserialization.GetSearchResults(json);
         }
@@ -22,7 +23,7 @@ namespace WindowsSystem_Backend.BL
 
     internal class SearchResponse
     {
-        public List<BO.Media>? Search { get; set; }
+        public List<MediaDto>? Search { get; set; }
         public string? TotalResult { get; set; }
         public bool Response { get; set; }
     }
@@ -52,7 +53,7 @@ namespace WindowsSystem_Backend.BL
 
     internal class JsonMovieDeserialization
     {
-        public static IEnumerable<BO.Media>? GetSearchResults(string json)
+        public static IEnumerable<MediaDto>? GetSearchResults(string json)
         {
             var searchResponse = JsonConvert.DeserializeObject<SearchResponse>(json);
 

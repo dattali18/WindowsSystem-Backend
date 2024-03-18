@@ -1,13 +1,13 @@
-﻿using WindowsSystem_Backend.BL.BO;
+﻿using WindowsSystem_Backend.BL.DTO;
 using WindowsSystem_Backend.DO;
 
 namespace WindowsSystem_Backend.BL
 {
     public class BlTvSeries
     {
-        public static Media getMediaFromMovie(TvSeries series)
+        public static MediaDto getMediaFromMovie(TvSeries series)
         {
-            return new Media
+            return new MediaDto
             {
                 Title = series.Title,
                 ImdbID = series.ImdbID,

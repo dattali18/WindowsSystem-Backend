@@ -1,6 +1,6 @@
-﻿namespace WindowsSystem_Backend.BL.BO
+﻿namespace WindowsSystem_Backend.BL.DTO
 {
-    public class Media
+    public class MediaDto
     {
         public string? Title { get; set; }
 

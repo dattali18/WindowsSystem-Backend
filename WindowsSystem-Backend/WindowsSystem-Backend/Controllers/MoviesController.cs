@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using WindowsSystem_Backend.DAL;
 using WindowsSystem_Backend.DO;
 using WindowsSystem_Backend.Models;
-using WindowsSystem_Backend.BL.BO;
+using WindowsSystem_Backend.BL.DTO;
 
 namespace WindowsSystem_Backend.Controllers
 {
@@ -69,7 +69,7 @@ namespace WindowsSystem_Backend.Controllers
 
         // GET - /api/movies/?s=[SEARCH_TERM]&y=[YEAR]
         [HttpGet("search")]
-        public async Task<ActionResult<IEnumerable<Media>>> GetMoviesBySearch(string s, int? y = null)
+        public async Task<ActionResult<IEnumerable<MediaDto>>> GetMoviesBySearch(string s, int? y = null)
         {
             var str = await OMDbApiService.GetMoviesBySearchAsync(s, y);
             var movies = BL.BlJsonConversion.GetMovieObjFromJson(str);

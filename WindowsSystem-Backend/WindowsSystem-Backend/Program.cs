@@ -1,5 +1,6 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using WindowsSystem_Backend.Models;
+using WindowsSystem_Backend.Controllers;
 
 namespace WindowsSystem_Backend
 {
@@ -28,6 +29,12 @@ namespace WindowsSystem_Backend
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            };
 
             app.UseHttpsRedirection();
 

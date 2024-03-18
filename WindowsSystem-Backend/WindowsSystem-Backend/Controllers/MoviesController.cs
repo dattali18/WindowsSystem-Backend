@@ -21,7 +21,7 @@ namespace WindowsSystem_Backend.Controllers
 
         // GET - /api/movies
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DO.Movie>>> GetMovies()
+        public async Task<ActionResult<IEnumerable<Movie>>> GetMovies()
         {
             if(_dbContext == null)
             {
@@ -35,7 +35,7 @@ namespace WindowsSystem_Backend.Controllers
 
         // GET - /api/movies/{id}
         [HttpGet("{id}")]
-        public async Task<ActionResult<DO.Movie>> GetMovie(int id)
+        public async Task<ActionResult<Movie>> GetMovie(int id)
         {
             if (_dbContext == null)
             {
@@ -52,11 +52,12 @@ namespace WindowsSystem_Backend.Controllers
             return Ok(movie);
         }
 
+        // GET - /api/movies/search/{imdbID}
         [HttpGet("search/{imdbID}")]
-        public async Task<ActionResult<DO.Movie>> GetMovie(string imdbID)
+        public async Task<ActionResult<Movie>> GetMovie(string imdbID)
         {
             var str = await OMDbApiService.GetMovieByIDAsync(imdbID);
-            var movie = BL.BL.GetMovieFromJson(str);
+            var movie = BL.BlJsonConversion.GetMovieFromJson(str);
 
             if (movie == null)
             {
@@ -71,16 +72,23 @@ namespace WindowsSystem_Backend.Controllers
         public async Task<ActionResult<IEnumerable<Media>>> GetMoviesBySearch(string s, int? y = null)
         {
             var str = await OMDbApiService.GetMoviesBySearchAsync(s, y);
-            var movies = BL.BL.GetMovieObjFromJson(str);
+            var movies = BL.BlJsonConversion.GetMovieObjFromJson(str);
             return Ok(movies);
         }
 
         // POST - api/movies
         [HttpPost]
-        public async Task<ActionResult<Movie>> PostMovie(string id)
+        public async Task<ActionResult<Movie>> PostMovie(string imdbID)
         {
-            var str =  await OMDbApiService.GetMovieByIDAsync(id);
-            var movie = BL.BL.GetMovieFromJson(str);
+            // check if the movie is allready in the DB
+            var existingMovie = await _dbContext.Movies.FirstOrDefaultAsync(movie => movie.ImdbID == imdbID);
+            if (existingMovie != null)
+            {
+                return Ok();
+            }
+
+            var str =  await OMDbApiService.GetMovieByIDAsync(imdbID);
+            var movie = BL.BlJsonConversion.GetMovieFromJson(str);
 
             if (movie == null)
             {

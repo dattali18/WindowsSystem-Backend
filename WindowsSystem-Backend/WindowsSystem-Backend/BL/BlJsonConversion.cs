@@ -2,7 +2,7 @@
 
 namespace WindowsSystem_Backend.BL
 {
-    public class BL
+    public class BlJsonConversion
     {
         public static IEnumerable<BO.Media>? GetMovieObjFromJson(string json)
         {
@@ -97,7 +97,7 @@ namespace WindowsSystem_Backend.BL
                 PosterURL = movieResult.Poster,
                 Year = year,
                 ImdbID = movieResult.ImdbID,
-                Rating = rating, time = time
+                Rating = rating, Time = time
             };
         }
 
@@ -148,7 +148,7 @@ namespace WindowsSystem_Backend.BL
                 EndingYear = endYear,
                 ImdbID = seriesResult.ImdbID,
                 Rating = rating,
-                time = time
+                Time = time
             };
         }
     }

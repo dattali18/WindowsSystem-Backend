@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\danie\\source\\repos\\WindowsSystem-Backend\\WindowsSystem-Backend\\WindowsSystem-Backend\\WindowsSystem-Backend.csproj": {}
+    "C:\\Users\\danie\\source\\repos\\WindowsSystem-Backend\\WindowsSystem-Backend\\WindowsSystem-Backend\\WindowsSystem-Backend.csproj": {}
   },
   "projects": {
-    "c:\\Users\\danie\\source\\repos\\WindowsSystem-Backend\\WindowsSystem-Backend\\WindowsSystem-Backend\\WindowsSystem-Backend.csproj": {
+    "C:\\Users\\danie\\source\\repos\\WindowsSystem-Backend\\WindowsSystem-Backend\\WindowsSystem-Backend\\WindowsSystem-Backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\danie\\source\\repos\\WindowsSystem-Backend\\WindowsSystem-Backend\\WindowsSystem-Backend\\WindowsSystem-Backend.csproj",
+        "projectUniqueName": "C:\\Users\\danie\\source\\repos\\WindowsSystem-Backend\\WindowsSystem-Backend\\WindowsSystem-Backend\\WindowsSystem-Backend.csproj",
         "projectName": "WindowsSystem-Backend",
-        "projectPath": "c:\\Users\\danie\\source\\repos\\WindowsSystem-Backend\\WindowsSystem-Backend\\WindowsSystem-Backend\\WindowsSystem-Backend.csproj",
+        "projectPath": "C:\\Users\\danie\\source\\repos\\WindowsSystem-Backend\\WindowsSystem-Backend\\WindowsSystem-Backend\\WindowsSystem-Backend.csproj",
         "packagesPath": "C:\\Users\\danie\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\danie\\source\\repos\\WindowsSystem-Backend\\WindowsSystem-Backend\\WindowsSystem-Backend\\obj\\",
+        "outputPath": "C:\\Users\\danie\\source\\repos\\WindowsSystem-Backend\\WindowsSystem-Backend\\WindowsSystem-Backend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\danie\\AppData\\Roaming\\NuGet\\NuGet.Config",

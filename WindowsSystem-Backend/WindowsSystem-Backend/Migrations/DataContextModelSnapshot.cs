@@ -22,6 +22,36 @@ namespace WindowsSystem_Backend.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("LibraryMovie", b =>
+                {
+                    b.Property<int>("LibrariesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MoviesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("LibrariesId", "MoviesId");
+
+                    b.HasIndex("MoviesId");
+
+                    b.ToTable("LibraryMovie");
+                });
+
+            modelBuilder.Entity("LibraryTvSeries", b =>
+                {
+                    b.Property<int>("LibrariesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TvSeriesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("LibrariesId", "TvSeriesId");
+
+                    b.HasIndex("TvSeriesId");
+
+                    b.ToTable("LibraryTvSeries");
+                });
+
             modelBuilder.Entity("WindowsSystem_Backend.DO.Library", b =>
                 {
                     b.Property<int>("Id")
@@ -30,10 +60,10 @@ namespace WindowsSystem_Backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Keywords")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("keywords")
+                    b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -55,14 +85,14 @@ namespace WindowsSystem_Backend.Migrations
                     b.Property<string>("ImdbID")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("LibraryId")
-                        .HasColumnType("int");
-
                     b.Property<string>("PosterURL")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Rating")
                         .HasColumnType("float");
+
+                    b.Property<int?>("Time")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
@@ -70,16 +100,11 @@ namespace WindowsSystem_Backend.Migrations
                     b.Property<int?>("Year")
                         .HasColumnType("int");
 
-                    b.Property<int?>("time")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ImdbID")
                         .IsUnique()
                         .HasFilter("[ImdbID] IS NOT NULL");
-
-                    b.HasIndex("LibraryId");
 
                     b.ToTable("Movies");
                 });
@@ -101,9 +126,6 @@ namespace WindowsSystem_Backend.Migrations
                     b.Property<string>("ImdbID")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("LibraryId")
-                        .HasColumnType("int");
-
                     b.Property<string>("PosterURL")
                         .HasColumnType("nvarchar(max)");
 
@@ -113,13 +135,13 @@ namespace WindowsSystem_Backend.Migrations
                     b.Property<int?>("StartingYear")
                         .HasColumnType("int");
 
+                    b.Property<int?>("Time")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("time")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("totalSeasons")
+                    b.Property<int?>("TotalSeasons")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -128,30 +150,37 @@ namespace WindowsSystem_Backend.Migrations
                         .IsUnique()
                         .HasFilter("[ImdbID] IS NOT NULL");
 
-                    b.HasIndex("LibraryId");
-
                     b.ToTable("TvSeries");
                 });
 
-            modelBuilder.Entity("WindowsSystem_Backend.DO.Movie", b =>
+            modelBuilder.Entity("LibraryMovie", b =>
                 {
                     b.HasOne("WindowsSystem_Backend.DO.Library", null)
-                        .WithMany("Movies")
-                        .HasForeignKey("LibraryId");
+                        .WithMany()
+                        .HasForeignKey("LibrariesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WindowsSystem_Backend.DO.Movie", null)
+                        .WithMany()
+                        .HasForeignKey("MoviesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("WindowsSystem_Backend.DO.TvSeries", b =>
+            modelBuilder.Entity("LibraryTvSeries", b =>
                 {
                     b.HasOne("WindowsSystem_Backend.DO.Library", null)
-                        .WithMany("TvSeries")
-                        .HasForeignKey("LibraryId");
-                });
+                        .WithMany()
+                        .HasForeignKey("LibrariesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-            modelBuilder.Entity("WindowsSystem_Backend.DO.Library", b =>
-                {
-                    b.Navigation("Movies");
-
-                    b.Navigation("TvSeries");
+                    b.HasOne("WindowsSystem_Backend.DO.TvSeries", null)
+                        .WithMany()
+                        .HasForeignKey("TvSeriesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -12,5 +12,16 @@ namespace WindowsSystem_Backend.DAL
         public DbSet<TvSeries> TvSeries { get; set; } = null!;
 
         public DbSet<Library> Libraries { get; set; } = null!;
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Library>()
+                .HasMany(l => l.Movies)
+                .WithMany(m => m.Libraries);
+
+            modelBuilder.Entity<Library>()
+                .HasMany(l => l.TvSeries)
+                .WithMany(t => t.Libraries);
+        }
     }
 }

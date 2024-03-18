@@ -19,10 +19,12 @@ namespace WindowsSystem_Backend.DO
 
         public int? EndingYear { get; set; }
 
-        public int? totalSeasons { get; set; }
+        public int? TotalSeasons { get; set; }
 
         public string? ImdbID { get; set; }
 
-        public int? time {  get; set; }
+        public int? Time {  get; set; }
+
+        public List<Library> Libraries { get; } = new List<Library>();
     }
 }

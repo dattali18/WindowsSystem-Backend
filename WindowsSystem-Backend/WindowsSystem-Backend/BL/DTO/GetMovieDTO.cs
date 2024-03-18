@@ -1,11 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyModel;
-
-namespace WindowsSystem_Backend.DO
+﻿namespace WindowsSystem_Backend.BL.DTO
 {
-    [Index(nameof(ImdbID), IsUnique = true)]
-    public class Movie
+    public class GetMovieDTO
     {
         public int Id { get; set; }
 
@@ -22,7 +17,5 @@ namespace WindowsSystem_Backend.DO
         public string? ImdbID { get; set; }
 
         public int? Time { get; set; }
-
-        public List<Library> Libraries { get; } = new List<Library>();
     }
 }

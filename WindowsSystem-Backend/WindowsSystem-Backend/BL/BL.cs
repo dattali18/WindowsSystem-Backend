@@ -2,9 +2,9 @@
 
 namespace WindowsSystem_Backend.BL
 {
-    public class BlMovie
+    public class BL
     {
-        public static IEnumerable<BO.MovieObj>? GetMovieObjFromJson(string json)
+        public static IEnumerable<BO.Media>? GetMovieObjFromJson(string json)
         {
             return JsonMovieDeserialization.GetSearchResults(json);
         }
@@ -22,7 +22,7 @@ namespace WindowsSystem_Backend.BL
 
     internal class SearchResponse
     {
-        public List<BO.MovieObj>? Search { get; set; }
+        public List<BO.Media>? Search { get; set; }
         public string? TotalResult { get; set; }
         public bool Response { get; set; }
     }
@@ -52,7 +52,7 @@ namespace WindowsSystem_Backend.BL
 
     internal class JsonMovieDeserialization
     {
-        public static IEnumerable<BO.MovieObj>? GetSearchResults(string json)
+        public static IEnumerable<BO.Media>? GetSearchResults(string json)
         {
             var searchResponse = JsonConvert.DeserializeObject<SearchResponse>(json);
 
@@ -112,7 +112,8 @@ namespace WindowsSystem_Backend.BL
 
             // parsing the year for movie
             // Split the string at the hyphen and store results in an array
-            string[] numbers = seriesResult.Years.Split('-');
+            string years = seriesResult.Years ?? "";
+            string[] numbers = years.Split('-');
 
             int? startYear = int.Parse(numbers[0]);
             int? endYear = null;

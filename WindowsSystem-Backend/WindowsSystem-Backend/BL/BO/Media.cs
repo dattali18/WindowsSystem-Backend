@@ -1,6 +1,6 @@
 ﻿namespace WindowsSystem_Backend.BL.BO
 {
-    public class MovieObj
+    public class Media
     {
         public string? Title { get; set; }
 

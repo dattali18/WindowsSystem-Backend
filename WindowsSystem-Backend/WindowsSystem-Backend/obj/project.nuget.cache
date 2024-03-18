@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Vm9gqSixU/9MrawFJtpoLbGlLdqB+kOsknwR/5qiLK5QHxog9eyo5KCPEQtmCky/RWmWghqeYXkJ/GkWMAZsrA==",
+  "dgSpecHash": "2zm2Swt6YDyGehRH1i1BCYI2605VMGLQo3Lw1BvCOGmCEr3tlHuCc2YnWRNk8XK3kJQ43Ei3L+1g2HHyz9tZog==",
   "success": true,
-  "projectFilePath": "C:\\Users\\danie\\source\\repos\\WindowsSystem-Backend\\WindowsSystem-Backend\\WindowsSystem-Backend\\WindowsSystem-Backend.csproj",
+  "projectFilePath": "c:\\Users\\danie\\source\\repos\\WindowsSystem-Backend\\WindowsSystem-Backend\\WindowsSystem-Backend\\WindowsSystem-Backend.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\danie\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",
     "C:\\Users\\danie\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",

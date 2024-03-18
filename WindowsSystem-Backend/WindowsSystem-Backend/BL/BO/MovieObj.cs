@@ -1,6 +1,6 @@
 ﻿namespace WindowsSystem_Backend.BL.BO
 {
-    public class Movie
+    public class MovieObj
     {
         public string? Title { get; set; }
 
@@ -9,5 +9,7 @@
         public string? Type { get; set; }
 
         public string? Poster { get; set; }
+
+        public string? ImdbID { get; set; }
     }
 }

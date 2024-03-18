@@ -52,13 +52,45 @@ namespace WindowsSystem_Backend.Controllers
             return Ok(movie);
         }
 
+        [HttpGet("search/{imdb}")]
+        public async Task<ActionResult<DO.Movie>> GetMovie(string imdb)
+        {
+            var str = await OMDbApiService.GetMovieByIDAsync(imdb);
+            var movie = BlMovie.GetMovieFromJson(str);
+
+            if (movie == null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(movie);
+        }
+
         // GET - /api/movies/?s=[SEARCH_TERM]&y=[YEAR]
         [HttpGet("search")]
-        public async Task<ActionResult<IEnumerable<BL.BO.Movie>>> GetMoviesBySearch(string s, int? y = null)
+        public async Task<ActionResult<IEnumerable<BL.BO.MovieObj>>> GetMoviesBySearch(string s, int? y = null)
         {
             var str = await OMDbApiService.GetMoviesBySearchAsync(s, y);
-            var movies = BlMovie.GetMoviesFronJson(str);
+            var movies = BlMovie.GetMovieObjFromJson(str);
             return Ok(movies);
+        }
+
+        // POST - api/movies
+        [HttpPost]
+        public async Task<ActionResult<DO.Movie>> PostMovie(string id)
+        {
+            var str =  await OMDbApiService.GetMovieByIDAsync(id);
+            var movie = BlMovie.GetMovieFromJson(str);
+
+            if (movie == null)
+            {
+                return BadRequest();
+            }
+
+            _dbContext.Movies.Add(movie);
+            await _dbContext.SaveChangesAsync();
+
+            return Ok(movie);
         }
     }
 }

@@ -1,5 +1,8 @@
-﻿namespace WindowsSystem_Backend.DO
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace WindowsSystem_Backend.DO
 {
+    [Index(nameof(ImdbID), IsUnique = true)]
     public class TvSeries
     {
         public int Id { get; set; }
@@ -16,6 +19,10 @@
 
         public int? EndingYear { get; set; }
 
-        public int totalSeasons { get; set; }
+        public int? totalSeasons { get; set; }
+
+        public string? ImdbID { get; set; }
+
+        public int? time {  get; set; }
     }
 }

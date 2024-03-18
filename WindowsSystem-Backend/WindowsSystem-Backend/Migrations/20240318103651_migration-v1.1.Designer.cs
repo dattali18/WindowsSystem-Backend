@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WindowsSystem_Backend.DAL;
 
@@ -11,9 +12,10 @@ using WindowsSystem_Backend.DAL;
 namespace WindowsSystem_Backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240318103651_migration-v1.1")]
+    partial class migrationv11
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,7 +55,7 @@ namespace WindowsSystem_Backend.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImdbID")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("LibraryId")
                         .HasColumnType("int");
@@ -75,10 +77,6 @@ namespace WindowsSystem_Backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ImdbID")
-                        .IsUnique()
-                        .HasFilter("[ImdbID] IS NOT NULL");
-
                     b.HasIndex("LibraryId");
 
                     b.ToTable("Movies");
@@ -99,7 +97,7 @@ namespace WindowsSystem_Backend.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImdbID")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("LibraryId")
                         .HasColumnType("int");
@@ -123,10 +121,6 @@ namespace WindowsSystem_Backend.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ImdbID")
-                        .IsUnique()
-                        .HasFilter("[ImdbID] IS NOT NULL");
 
                     b.HasIndex("LibraryId");
 

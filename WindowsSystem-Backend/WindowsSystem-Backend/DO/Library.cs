@@ -1,4 +1,4 @@
-﻿namespace WindowsSystem_Backend.Models
+﻿namespace WindowsSystem_Backend.DO
 {
     public class Library
     {

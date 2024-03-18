@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WindowsSystem_Backend.DAL;
+using WindowsSystem_Backend.DO;
 using WindowsSystem_Backend.Models;
+using WindowsSystem_Backend.BL;
 
 namespace WindowsSystem_Backend.Controllers
 {
@@ -18,7 +21,7 @@ namespace WindowsSystem_Backend.Controllers
 
         // GET - /api/movies
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Movie>>> GetMovies()
+        public async Task<ActionResult<IEnumerable<DO.Movie>>> GetMovies()
         {
             if(_dbContext == null)
             {
@@ -32,7 +35,7 @@ namespace WindowsSystem_Backend.Controllers
 
         // GET - /api/movies/{id}
         [HttpGet("{id}")]
-        public async Task<ActionResult<Movie>> GetMovie(int id)
+        public async Task<ActionResult<DO.Movie>> GetMovie(int id)
         {
             if (_dbContext == null)
             {
@@ -51,11 +54,11 @@ namespace WindowsSystem_Backend.Controllers
 
         // GET - /api/movies/?s=[SEARCH_TERM]&y=[YEAR]
         [HttpGet("search")]
-        public async Task<ActionResult<string>> GetMoviesBySearch(string s, int? y = null)
+        public async Task<ActionResult<IEnumerable<BL.BO.Movie>>> GetMoviesBySearch(string s, int? y = null)
         {
             var str = await OMDbApiService.GetMoviesBySearchAsync(s, y);
-
-            return Ok(str);
+            var movies = BlMovie.GetMoviesFronJson(str);
+            return Ok(movies);
         }
     }
 }

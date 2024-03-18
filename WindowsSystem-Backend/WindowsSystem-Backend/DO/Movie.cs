@@ -1,6 +1,6 @@
-﻿namespace WindowsSystem_Backend.Models
+﻿namespace WindowsSystem_Backend.DO
 {
-    public class TvSeries
+    public class Movie
     {
         public int Id { get; set; }
 
@@ -12,10 +12,6 @@
 
         public double Rating { get; set; }
 
-        public int? StartingYear { get; set; }
-
-        public int? EndingYear { get; set;}
-
-        public int totalSeasons { get; set; }
+        public int Year { get; set; }
     }
 }

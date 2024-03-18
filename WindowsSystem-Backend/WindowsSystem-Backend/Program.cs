@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WindowsSystem_Backend.Models;
 using WindowsSystem_Backend.Controllers;
+using WindowsSystem_Backend.DAL;
 
 namespace WindowsSystem_Backend
 {
@@ -19,7 +19,12 @@ namespace WindowsSystem_Backend
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            //builder.Services.AddSwaggerGen();
+
+            builder.Services.AddSwaggerGen(options =>
+            {
+                options.CustomSchemaIds(type => type.ToString());
+            });
 
             var app = builder.Build();
 

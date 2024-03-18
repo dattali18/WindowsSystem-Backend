@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WindowsSystem_Backend.DO;
 
-namespace WindowsSystem_Backend.Models
+namespace WindowsSystem_Backend.DAL
 {
     public class DataContext : DbContext
     {

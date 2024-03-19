@@ -14,5 +14,20 @@ namespace WindowsSystem_Backend.BL
                 Year = $"{movie.Year}"
             };
         }
+
+        public static GetMovieDto getMovieDtoFromMovie(Movie movie)
+        {
+            return new GetMovieDto
+            {
+                Title = movie.Title,
+                ImdbID = movie.ImdbID,
+                Time = movie.Time,
+                Genre = movie.Genre,
+                Year = movie.Year,
+                Rating = movie.Rating,
+                Id = movie.Id,
+                PosterURL = movie.PosterURL
+            };
+        }
     }
 }

@@ -67,6 +67,7 @@ namespace WindowsSystem_Backend.Controllers
             return Ok(BlLibrary.getLibreryDTOs(library, movies, tvSeries));
         }
 
+        // GET - /api/libraries/{id}/movies
         [HttpGet("{id}/movies")]
         public async Task<ActionResult<IEnumerable<MediaDto>>> GetLibraryMovies(int id)
         {
@@ -94,7 +95,35 @@ namespace WindowsSystem_Backend.Controllers
             return Ok(media);
         }
 
-        // GET - /api/libraries/
+        // GET - /api/libraries/{id}/tvseries
+        [HttpGet("{id}/tvseries")]
+        public async Task<ActionResult<IEnumerable<MediaDto>>> GetLibraryTvSeries(int id)
+        {
+            if (_dbContext == null)
+            {
+                return NotFound();
+            }
+
+            var library = await _dbContext.Libraries
+                .Include(l => l.TvSeries)
+                .FirstOrDefaultAsync(i => i.Id == id);
+
+            if (library == null)
+            {
+                return NotFound();
+            }
+
+            var series = library.TvSeries;
+
+            List<MediaDto> media = (
+                from serie in series
+                select BlTvSeries.getMediaFromTvSeries(serie)
+            ).ToList();
+
+            return Ok(media);
+        }
+
+        // GET - /api/libraries/search/name
         [HttpGet("search/{name}")]
         public async Task<ActionResult<IEnumerable<Library>>> GetLibraryByTitle(string name)
         {
@@ -111,6 +140,7 @@ namespace WindowsSystem_Backend.Controllers
             return Ok(libraries);
         }
 
+        // POST - /api/libraries
         [HttpPost]
         public async Task<ActionResult<Library>> CreateLibrary(CreateLibraryDto createLibraryDto)
         {
@@ -131,6 +161,7 @@ namespace WindowsSystem_Backend.Controllers
             return CreatedAtAction(nameof(GetLibrary), new { id = library.Id }, library);
         }
 
+        // POST - api/libraries/{librariyId}/movies
         [HttpPost("{libraryId}/movies")]
         public async Task<IActionResult> AddMovieToLibrary(int libraryId, string imdbID)
         {
@@ -139,13 +170,16 @@ namespace WindowsSystem_Backend.Controllers
                 return NotFound();
             }
 
-            var library = await _dbContext.Libraries.FindAsync(libraryId);
+            var library = await _dbContext.Libraries
+                .Include(l => l.Movies)
+                .FirstOrDefaultAsync(i => i.Id == libraryId);
+
             if (library == null)
             {
                 return NotFound();
             }
 
-            List<Movie> movies = library!.Movies;
+            List<Movie> movies = library.Movies;
 
             // check if the movie is allready in the library
             if (movies.FirstOrDefault(movie => movie.ImdbID == imdbID) != null)
@@ -158,7 +192,7 @@ namespace WindowsSystem_Backend.Controllers
             if (existingMovie == null)
             {
                 // Movie doesn't exist in the local database, fetch it from the OMDb API
-                var movieDetails = await OMDbApiService.GetMovieByIDAsync(imdbID);
+                var movieDetails = await OmdbbApiService.GetMovieByIDAsync(imdbID);
                 var movie = BL.BlJsonConversion.GetMovieFromJson(movieDetails);
 
                 if (movie == null)
@@ -170,12 +204,43 @@ namespace WindowsSystem_Backend.Controllers
                 existingMovie = movie;
             }  
             
-            library!.Movies.Add(existingMovie);
+            library.Movies.Add(existingMovie);
             await _dbContext.SaveChangesAsync();
 
             return Ok();
         }
 
+        // DELETE - api/libraries/{librariyId}/movies
+        [HttpDelete("{libraryId}/movies")]
+        public async Task<IActionResult> DeleteMovieFromLibrary(int libraryId, string imdbID)
+        {
+            if (_dbContext == null)
+            {
+                return NotFound();
+            }
+
+            var library = await _dbContext.Libraries
+                .Include(l => l.Movies)
+                .FirstOrDefaultAsync(i => i.Id == libraryId);
+
+            if (library == null)
+            {
+                return NotFound();
+            }
+
+            var movie = library.Movies.FirstOrDefault(i => i.ImdbID == imdbID);
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            library.Movies.Remove(movie);
+            await _dbContext.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        // POST - api/libraries/{librariyId}/movies
         [HttpPost("{libraryId}/tvseries")]
         public async Task<IActionResult> AddSeriesToLibrary(int libraryId, string imdbID)
         {
@@ -184,7 +249,10 @@ namespace WindowsSystem_Backend.Controllers
                 return NotFound();
             }
 
-            var library = await _dbContext.Libraries.FindAsync(libraryId);
+            var library = await _dbContext.Libraries
+                .Include(l => l.TvSeries)
+                .FirstOrDefaultAsync(i => i.Id == libraryId);
+
             if (library == null)
             {
                 return NotFound();
@@ -195,7 +263,7 @@ namespace WindowsSystem_Backend.Controllers
             if (existingSeries == null)
             {
                 // Movie doesn't exist in the local database, fetch it from the OMDb API
-                var seriesDetails = await OMDbApiService.GetSeriesByIDAsync(imdbID);
+                var seriesDetails = await OmdbbApiService.GetSeriesByIDAsync(imdbID);
                 var series = BL.BlJsonConversion.GetTvSeriesFromJson(seriesDetails);
 
                 if (series == null)
@@ -211,6 +279,79 @@ namespace WindowsSystem_Backend.Controllers
             await _dbContext.SaveChangesAsync();
 
             return Ok();
+        }
+
+        [HttpDelete("{libraryId}/tvseries")]
+        public async Task<IActionResult> DeleteTvSeriesFromLibrary(int libraryId, string imdbID)
+        {
+            if (_dbContext == null)
+            {
+                return NotFound();
+            }
+
+            var library = await _dbContext.Libraries
+                .Include(l => l.TvSeries)
+                .FirstOrDefaultAsync(i => i.Id == libraryId);
+
+            if (library == null)
+            {
+                return NotFound();
+            }
+
+            var series = library.TvSeries.FirstOrDefault(i => i.ImdbID == imdbID);
+            if (series == null)
+            {
+                return NotFound();
+            }
+
+            library.TvSeries.Remove(series);
+            await _dbContext.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        // PUT - api/libraries/{id}
+        [HttpPut]
+        public async Task<IActionResult> updateLibrary(int id, CreateLibraryDto libraryDto)
+        {
+            if (_dbContext == null)
+            {
+                return NotFound();
+            }
+
+            var library = await _dbContext.Libraries.FindAsync(id);
+            if (library == null)
+            {
+                return NotFound();
+            }
+
+            library.Name = libraryDto.Name;
+            library.Keywords = libraryDto.Keywords;
+
+            await _dbContext.SaveChangesAsync();
+
+            return Ok(library);
+        }
+
+        // DELETe - api/libraries/{id}
+        [HttpDelete]
+        public async Task<IActionResult> DeleteLibrary(int id)
+        {
+            if (_dbContext == null)
+            {
+                return NotFound();
+            }
+
+            var library = await _dbContext.Libraries.FindAsync(id);
+            if (library == null)
+            {
+                return NotFound();
+            }
+
+            _dbContext.Libraries.Remove(library);
+            await _dbContext.SaveChangesAsync();
+
+            return NoContent();
         }
     }
 }

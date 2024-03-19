@@ -14,7 +14,7 @@ namespace WindowsSystem_Backend.BL
                                 select BlMovie.getMediaFromMovie(movie);
 
             var seriesMedia = from series in tvSeries
-                              select BlTvSeries.getMediaFromMovie(series);
+                              select BlTvSeries.getMediaFromTvSeries(series);
 
             List<MediaDto> media = movieMedia.Concat(seriesMedia).ToList();
 

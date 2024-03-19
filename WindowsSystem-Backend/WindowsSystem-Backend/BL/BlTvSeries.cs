@@ -5,7 +5,7 @@ namespace WindowsSystem_Backend.BL
 {
     public class BlTvSeries
     {
-        public static MediaDto getMediaFromMovie(TvSeries series)
+        public static MediaDto getMediaFromTvSeries(TvSeries series)
         {
             return new MediaDto
             {

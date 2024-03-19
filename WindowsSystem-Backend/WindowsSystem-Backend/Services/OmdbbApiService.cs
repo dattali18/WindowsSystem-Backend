@@ -1,6 +1,6 @@
 ﻿namespace WindowsSystem_Backend.Models
 {
-    public class OMDbApiService
+    public class OmdbbApiService
     {
         private static readonly string _apiKey = "130ade15";
         private static readonly string _baseUrl = "http://www.omdbapi.com/";

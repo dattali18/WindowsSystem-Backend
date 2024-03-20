@@ -128,13 +128,19 @@ namespace WindowsSystem_Backend.BL
             string years = seriesResult.Years ?? "";
             string[] numbers = years.Split('-');
 
-            int? startYear = int.Parse(numbers[0]);
-            int? endYear = null;
 
+            int startYear;
+            int endYear = 0;
+            if (!int.TryParse(numbers[0], out startYear))
+            {
+                startYear = 0;
+            }
 
             if(numbers.Length > 1)
             {
-                endYear = int.Parse(numbers[1]);
+                if (!int.TryParse(numbers[1], out endYear)) {
+                    endYear = 0;
+                }
             }
 
 

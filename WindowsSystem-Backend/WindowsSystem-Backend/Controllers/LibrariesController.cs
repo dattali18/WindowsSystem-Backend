@@ -11,11 +11,11 @@ namespace WindowsSystem_Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LibraryController : ControllerBase
+    public class LibrariesController : ControllerBase
     {
         private readonly DataContext _dbContext;
 
-        public LibraryController(DataContext dbContext)
+        public LibrariesController(DataContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -125,7 +125,7 @@ namespace WindowsSystem_Backend.Controllers
 
         // GET - /api/libraries/search/name
         [HttpGet("search/{name}")]
-        public async Task<ActionResult<IEnumerable<Library>>> GetLibraryByTitle(string name)
+        public async Task<ActionResult<IEnumerable<GetLibreryDto>>> GetLibraryByTitle(string name)
         {
             // Get the libraries with a name matching the search term
             var libraries = await _dbContext.Libraries
@@ -137,12 +137,17 @@ namespace WindowsSystem_Backend.Controllers
                 return NotFound();
             }
 
-            return Ok(libraries);
+            var librariesDto = (
+                    from libary in libraries
+                    select BlLibrary.getLibreryDTOs(libary, new List<Movie> { }, new List<TvSeries> { })
+                ).ToList();
+
+            return Ok(librariesDto);
         }
 
         // POST - /api/libraries
         [HttpPost]
-        public async Task<ActionResult<Library>> CreateLibrary(CreateLibraryDto createLibraryDto)
+        public async Task<ActionResult<GetLibreryDto>> CreateLibrary(CreateLibraryDto createLibraryDto)
         {
             if (_dbContext == null)
             {
@@ -158,7 +163,9 @@ namespace WindowsSystem_Backend.Controllers
             _dbContext.Libraries.Add(library);
             await _dbContext.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetLibrary), new { id = library.Id }, library);
+            var libraryDto = BL.BlLibrary.getLibreryDTOs(library, new(), new());
+
+            return CreatedAtAction(nameof(GetLibrary), new { id = library.Id }, libraryDto);
         }
 
         // POST - api/libraries/{librariyId}/movies
@@ -207,7 +214,7 @@ namespace WindowsSystem_Backend.Controllers
             library.Movies.Add(existingMovie);
             await _dbContext.SaveChangesAsync();
 
-            return Ok();
+            return Ok(BlMovie.getMediaFromMovie(existingMovie));
         }
 
         // DELETE - api/libraries/{librariyId}/movies
@@ -278,7 +285,7 @@ namespace WindowsSystem_Backend.Controllers
             library.TvSeries.Add(existingSeries);
             await _dbContext.SaveChangesAsync();
 
-            return Ok();
+            return Ok(BlTvSeries.getMediaFromTvSeries(existingSeries));
         }
 
         [HttpDelete("{libraryId}/tvseries")]
@@ -330,10 +337,10 @@ namespace WindowsSystem_Backend.Controllers
 
             await _dbContext.SaveChangesAsync();
 
-            return Ok(library);
+            return Ok(libraryDto);
         }
 
-        // DELETe - api/libraries/{id}
+        // DELETE - api/libraries/{id}
         [HttpDelete]
         public async Task<IActionResult> DeleteLibrary(int id)
         {
@@ -342,11 +349,17 @@ namespace WindowsSystem_Backend.Controllers
                 return NotFound();
             }
 
-            var library = await _dbContext.Libraries.FindAsync(id);
+            var library = await _dbContext.Libraries
+                    .Include(l => l.Movies)
+                    .Include(l => l.TvSeries)
+                    .FirstOrDefaultAsync(i => i.Id == id);
             if (library == null)
             {
                 return NotFound();
             }
+
+            library.Movies.RemoveAll(l => true);
+            library.TvSeries.RemoveAll(l => true);
 
             _dbContext.Libraries.Remove(library);
             await _dbContext.SaveChangesAsync();

@@ -19,6 +19,7 @@ namespace WindowsSystem_Backend.BL
             List<MediaDto> media = movieMedia.Concat(seriesMedia).ToList();
 
             return new GetLibreryDto { 
+                Id = library.Id,
                 Name = library.Name,
                 Keywords = library.Keywords,
                 Media = media

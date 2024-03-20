@@ -57,7 +57,18 @@ namespace WindowsSystem_Backend.BL
         {
             var searchResponse = JsonConvert.DeserializeObject<SearchResponse>(json);
 
-            return searchResponse?.Search;
+            var mediaDtos = (
+                from response in searchResponse?.Search
+                select new MediaDto { 
+                    Title = response.Title,
+                    Year = response.Year,
+                    ImdbID = response.ImdbID,
+                    Type = response.Type,
+                    Poster = response.Poster
+                }
+                ).ToList();
+
+            return mediaDtos;
         }
 
         public static DO.Movie? GetMovieResult(string json)
@@ -98,7 +109,8 @@ namespace WindowsSystem_Backend.BL
                 PosterURL = movieResult.Poster,
                 Year = year,
                 ImdbID = movieResult.ImdbID,
-                Rating = rating, Time = time
+                Rating = rating,
+                Time = time
             };
         }
 

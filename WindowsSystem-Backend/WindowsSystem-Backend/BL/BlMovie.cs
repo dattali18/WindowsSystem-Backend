@@ -11,7 +11,8 @@ namespace WindowsSystem_Backend.BL
                 Title = movie.Title,
                 ImdbID = movie.ImdbID,
                 Poster = movie.PosterURL,
-                Year = $"{movie.Year}"
+                Year = $"{movie.Year}",
+                Type = "movie"
             };
         }
 

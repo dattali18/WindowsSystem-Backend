@@ -54,7 +54,7 @@ namespace WindowsSystem_Backend.Controllers
                 return NotFound();
             }
 
-            return Ok(BlMovie.getMediaFromMovie(movie));
+            return Ok(BlMovie.getMovieDtoFromMovie(movie));
         }
 
         // GET - /api/movies/search/{imdbID}
@@ -69,7 +69,7 @@ namespace WindowsSystem_Backend.Controllers
                 return BadRequest();
             }
 
-            return Ok(BlMovie.getMediaFromMovie(movie));
+            return Ok(BlMovie.getMovieDtoFromMovie(movie));
         }
 
         // GET - /api/movies/?s=[SEARCH_TERM]&y=[YEAR]
@@ -78,6 +78,7 @@ namespace WindowsSystem_Backend.Controllers
         {
             var str = await OmdbbApiService.GetMoviesBySearchAsync(s, y);
             var movies = BL.BlJsonConversion.GetMovieObjFromJson(str);
+
             return Ok(movies);
         }
 
@@ -89,7 +90,7 @@ namespace WindowsSystem_Backend.Controllers
             var existingMovie = await _dbContext.Movies.FirstOrDefaultAsync(movie => movie.ImdbID == imdbID);
             if (existingMovie != null)
             {
-                return Ok();
+                return Ok(BlMovie.getMovieDtoFromMovie(existingMovie));
             }
 
             var str =  await OmdbbApiService.GetMovieByIDAsync(imdbID);
@@ -103,7 +104,9 @@ namespace WindowsSystem_Backend.Controllers
             _dbContext.Movies.Add(movie);
             await _dbContext.SaveChangesAsync();
 
-            return Ok(BlMovie.getMediaFromMovie(movie));
+            //movie.Id = 0;
+
+            return Ok(BlMovie.getMovieDtoFromMovie(movie));
         }
     }
 }

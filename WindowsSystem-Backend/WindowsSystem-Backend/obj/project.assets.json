@@ -11480,24 +11480,26 @@
     ]
   },
   "packageFolders": {
-    "/Users/danielattali/.nuget/packages/": {}
+    "C:\\Users\\danie\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/danielattali/Documents/WindowsSystem_Backend/WindowsSystem-Backend/WindowsSystem-Backend/WindowsSystem-Backend.csproj",
+      "projectUniqueName": "C:\\Users\\danie\\source\\repos\\WindowsSystem-Backend\\WindowsSystem-Backend\\WindowsSystem-Backend\\WindowsSystem-Backend.csproj",
       "projectName": "WindowsSystem-Backend",
-      "projectPath": "/Users/danielattali/Documents/WindowsSystem_Backend/WindowsSystem-Backend/WindowsSystem-Backend/WindowsSystem-Backend.csproj",
-      "packagesPath": "/Users/danielattali/.nuget/packages/",
-      "outputPath": "/Users/danielattali/Documents/WindowsSystem_Backend/WindowsSystem-Backend/WindowsSystem-Backend/obj/",
+      "projectPath": "C:\\Users\\danie\\source\\repos\\WindowsSystem-Backend\\WindowsSystem-Backend\\WindowsSystem-Backend\\WindowsSystem-Backend.csproj",
+      "packagesPath": "C:\\Users\\danie\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\danie\\source\\repos\\WindowsSystem-Backend\\WindowsSystem-Backend\\WindowsSystem-Backend\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/danielattali/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\danie\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -11510,6 +11512,11 @@
         "warnAsError": [
           "NU1605"
         ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -11562,7 +11569,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.420/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202\\RuntimeIdentifierGraph.json"
       }
     }
   }

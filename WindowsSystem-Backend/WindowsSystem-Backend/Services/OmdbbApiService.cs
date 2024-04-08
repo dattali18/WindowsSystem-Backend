@@ -1,6 +1,7 @@
-﻿namespace WindowsSystem_Backend.Models
+﻿namespace WindowsSystem_Backend.Services
 {
-    public class OmdbbApiService
+
+    public class OmdbApiService
     {
         private static readonly string _apiKey = "130ade15";
         private static readonly string _baseUrl = "http://www.omdbapi.com/";
@@ -41,11 +42,11 @@
             }
         }
 
-        public static async Task<string> GetMoviesBySearchAsync(string s, int? y = null)
+        public static async Task<string> GetMoviesBySearchAsync(string s, int? y = null, int page = 0)
         {
             using (var httpClient = new HttpClient())
             {
-                var query = $"?apikey={_apiKey}&type=movie&s=\"{s}\"";
+                var query = $"?apikey={_apiKey}&type=movie&s=\"{s}\"&page={page}";
                 
                 if (y != null)
                 {
@@ -100,15 +101,15 @@
             }
         }
 
-        public static async Task<string> GetSeriesBySearchAsync(string s, int? y = null)
+        public static async Task<string> GetSeriesBySearchAsync(string s, int? y = null, int page = 0)
         {
             using (var httpClient = new HttpClient())
             {
-                var query = $"?apikey={_apiKey}&type=series&s=\"{s}\"";
+                var query = $"?apikey={_apiKey}&type=series&s=\"{s}\"&page={page}";
 
                 if (y != null)
                 {
-                    query = query + $"&y={y}";
+                    query += $"&y={y}";
                 }
 
                 var url = _baseUrl + query;

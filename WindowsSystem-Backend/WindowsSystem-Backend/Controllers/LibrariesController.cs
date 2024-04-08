@@ -5,7 +5,7 @@ using WindowsSystem_Backend.BL;
 using WindowsSystem_Backend.BL.DTO;
 using WindowsSystem_Backend.DAL;
 using WindowsSystem_Backend.DO;
-using WindowsSystem_Backend.Models;
+using WindowsSystem_Backend.Services;
 
 namespace WindowsSystem_Backend.Controllers
 {
@@ -22,7 +22,7 @@ namespace WindowsSystem_Backend.Controllers
 
         // GET - /api/libraries/
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GetLibreryDto>>> GetLibraries()
+        public async Task<ActionResult<IEnumerable<GetLibraryDto>>> GetLibraries()
         {
             if (_dbContext == null)
             {
@@ -34,9 +34,9 @@ namespace WindowsSystem_Backend.Controllers
                 .Include(l => l.TvSeries)
                 .ToListAsync();
 
-            List<GetLibreryDto> librariesDto = (
+            List<GetLibraryDto> librariesDto = (
                     from library in libraries
-                    select BlLibrary.getLibreryDTOs(library, library.Movies, library.TvSeries)
+                    select BlLibrary.getLibraryDTOs(library, library.Movies, library.TvSeries)
                 ).ToList();
 
             return Ok(librariesDto);
@@ -64,7 +64,7 @@ namespace WindowsSystem_Backend.Controllers
             List<TvSeries> tvSeries = library.TvSeries;
 
 
-            return Ok(BlLibrary.getLibreryDTOs(library, movies, tvSeries));
+            return Ok(BlLibrary.getLibraryDTOs(library, movies, tvSeries));
         }
 
         // GET - /api/libraries/{id}/movies
@@ -125,7 +125,7 @@ namespace WindowsSystem_Backend.Controllers
 
         // GET - /api/libraries/search/name
         [HttpGet("search/{name}")]
-        public async Task<ActionResult<IEnumerable<GetLibreryDto>>> GetLibraryByTitle(string name)
+        public async Task<ActionResult<IEnumerable<GetLibraryDto>>> GetLibraryByTitle(string name)
         {
             // Get the libraries with a name matching the search term
             var libraries = await _dbContext.Libraries
@@ -138,8 +138,8 @@ namespace WindowsSystem_Backend.Controllers
             }
 
             var librariesDto = (
-                    from libary in libraries
-                    select BlLibrary.getLibreryDTOs(libary, new List<Movie> { }, new List<TvSeries> { })
+                    from library in libraries
+                    select BlLibrary.getLibraryDTOs(library, new List<Movie> { }, new List<TvSeries> { })
                 ).ToList();
 
             return Ok(librariesDto);
@@ -147,7 +147,7 @@ namespace WindowsSystem_Backend.Controllers
 
         // POST - /api/libraries
         [HttpPost]
-        public async Task<ActionResult<GetLibreryDto>> CreateLibrary(CreateLibraryDto createLibraryDto)
+        public async Task<ActionResult<GetLibraryDto>> CreateLibrary(CreateLibraryDto createLibraryDto)
         {
             if (_dbContext == null)
             {
@@ -163,12 +163,12 @@ namespace WindowsSystem_Backend.Controllers
             _dbContext.Libraries.Add(library);
             await _dbContext.SaveChangesAsync();
 
-            var libraryDto = BL.BlLibrary.getLibreryDTOs(library, new(), new());
+            var libraryDto = BL.BlLibrary.getLibraryDTOs(library, new(), new());
 
             return CreatedAtAction(nameof(GetLibrary), new { id = library.Id }, libraryDto);
         }
 
-        // POST - api/libraries/{librariyId}/movies
+        // POST - api/libraries/{libraryID}/movies
         [HttpPost("{libraryId}/movies")]
         public async Task<IActionResult> AddMovieToLibrary(int libraryId, string imdbID)
         {
@@ -187,11 +187,12 @@ namespace WindowsSystem_Backend.Controllers
             }
 
             List<Movie> movies = library.Movies;
+            // check if the movie is already in the library
+            var movie = movies.FirstOrDefault(movie => movie.ImdbID == imdbID);
 
-            // check if the movie is allready in the library
-            if (movies.FirstOrDefault(movie => movie.ImdbID == imdbID) != null)
+            if (movie != null)
             {
-                return Ok("The movie was allready in the library");
+                return Ok(BlMovie.getMediaFromMovie(movie));
             }
 
             // Check if the movie already exists in the local database
@@ -199,16 +200,15 @@ namespace WindowsSystem_Backend.Controllers
             if (existingMovie == null)
             {
                 // Movie doesn't exist in the local database, fetch it from the OMDb API
-                var movieDetails = await OmdbbApiService.GetMovieByIDAsync(imdbID);
-                var movie = BL.BlJsonConversion.GetMovieFromJson(movieDetails);
+                var movieFromService = await BlMovie.GetMovieByImdbID(imdbID);
 
-                if (movie == null)
+                if (movieFromService == null)
                 {
                     return NotFound();
                 }
 
-                _dbContext.Movies.Add(movie);
-                existingMovie = movie;
+                _dbContext.Movies.Add(movieFromService);
+                existingMovie = movieFromService;
             }  
             
             library.Movies.Add(existingMovie);
@@ -217,7 +217,7 @@ namespace WindowsSystem_Backend.Controllers
             return Ok(BlMovie.getMediaFromMovie(existingMovie));
         }
 
-        // DELETE - api/libraries/{librariyId}/movies
+        // DELETE - api/libraries/{libraryId}/movies
         [HttpDelete("{libraryId}/movies")]
         public async Task<IActionResult> DeleteMovieFromLibrary(int libraryId, string imdbID)
         {
@@ -247,7 +247,7 @@ namespace WindowsSystem_Backend.Controllers
             return NoContent();
         }
 
-        // POST - api/libraries/{librariyId}/movies
+        // POST - api/libraries/{libraryId}/movies
         [HttpPost("{libraryId}/tvseries")]
         public async Task<IActionResult> AddSeriesToLibrary(int libraryId, string imdbID)
         {
@@ -270,8 +270,7 @@ namespace WindowsSystem_Backend.Controllers
             if (existingSeries == null)
             {
                 // Movie doesn't exist in the local database, fetch it from the OMDb API
-                var seriesDetails = await OmdbbApiService.GetSeriesByIDAsync(imdbID);
-                var series = BL.BlJsonConversion.GetTvSeriesFromJson(seriesDetails);
+                var series = await BlTvSeries.GetTvSeriesByImdbID(imdbID);
 
                 if (series == null)
                 {

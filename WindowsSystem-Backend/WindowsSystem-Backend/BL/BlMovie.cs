@@ -1,5 +1,6 @@
 ﻿using WindowsSystem_Backend.BL.DTO;
 using WindowsSystem_Backend.DO;
+using WindowsSystem_Backend.Services;
 
 namespace WindowsSystem_Backend.BL
 {
@@ -29,6 +30,15 @@ namespace WindowsSystem_Backend.BL
                 Id = movie.Id,
                 PosterURL = movie.PosterURL
             };
+        }
+        public static async Task<Movie?> GetMovieByImdbID(string imdbID) {
+            var movieDetails = await OmdbApiService.GetMovieByIDAsync(imdbID);
+            return BlJsonConversion.GetMovieFromJson(movieDetails);
+        }
+
+        public static async Task<IEnumerable<MediaDto>?> GetMoviesBySearch(string s, int? y = null) {
+            var str = await OmdbApiService.GetMoviesBySearchAsync(s, y);
+            return BlJsonConversion.GetMovieObjFromJson(str);
         }
     }
 }

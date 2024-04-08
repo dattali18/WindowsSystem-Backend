@@ -1,3 +1,4 @@
 .github/
 .vs/
 WindowsSystem-Backend/.vs/
+.DS_Store

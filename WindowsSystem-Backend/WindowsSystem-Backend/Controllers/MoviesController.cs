@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+
 using WindowsSystem_Backend.DAL;
-using WindowsSystem_Backend.Services;
 using WindowsSystem_Backend.BL.DTO;
 using WindowsSystem_Backend.BL;
 
@@ -16,6 +16,8 @@ namespace WindowsSystem_Backend.Controllers
     public class MoviesController : ControllerBase
     {
         private readonly DataContext _dbContext;
+
+        private readonly Bl bl = Factory.GetBL();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MoviesController"/> class.
@@ -41,9 +43,10 @@ namespace WindowsSystem_Backend.Controllers
             }
 
             var movies = await _dbContext.Movies.ToListAsync();
+
             var moviesDto = (
                 from movie in movies
-                select BlMovie.getMovieDtoFromMovie(movie)
+                select bl.BlMovie.getMovieDtoFromMovie(movie)
                 ).ToList();
 
             return Ok(moviesDto);
@@ -71,7 +74,7 @@ namespace WindowsSystem_Backend.Controllers
                 return NotFound();
             }
 
-            return Ok(BlMovie.getMovieDtoFromMovie(movie));
+            return Ok(bl.BlMovie.getMovieDtoFromMovie(movie));
         }
 
         // GET - /api/movies/search/{imdbID}
@@ -84,14 +87,14 @@ namespace WindowsSystem_Backend.Controllers
         [HttpGet("search/{imdbID}")]
         public async Task<ActionResult<GetMovieDto>> GetMovie(string imdbID)
         {
-            var movie = await BlMovie.GetMovieByImdbID(imdbID);
+            var movie = await bl.BlMovie.GetMovieByImdbID(imdbID);
 
             if (movie == null)
             {
                 return BadRequest();
             }
 
-            return Ok(BlMovie.getMovieDtoFromMovie(movie));
+            return Ok(bl.BlMovie.getMovieDtoFromMovie(movie));
         }
 
         // GET - /api/movies/?s=[SEARCH_TERM]&y=[YEAR]
@@ -105,7 +108,7 @@ namespace WindowsSystem_Backend.Controllers
         [HttpGet("search")]
         public async Task<ActionResult<IEnumerable<MediaDto>>> GetMoviesBySearch(string s, int? y = null)
         {
-            var movies = await BlMovie.GetMoviesBySearch(s, y);
+            var movies = await bl.BlMovie.GetMoviesBySearch(s, y);
 
             return Ok(movies);
         }
@@ -124,12 +127,12 @@ namespace WindowsSystem_Backend.Controllers
             var existingMovie = await _dbContext.Movies.FirstOrDefaultAsync(movie => movie.ImdbID == imdbID);
             if (existingMovie != null)
             {
-                return Ok(BlMovie.getMovieDtoFromMovie(existingMovie));
+                return Ok(bl.BlMovie.getMovieDtoFromMovie(existingMovie));
             }
 
             // var str = await OmdbApiService.GetMovieByIDAsync(imdbID);
             // var movie = BL.BlJsonConversion.GetMovieFromJson(str);
-            var movie = await BlMovie.GetMovieByImdbID(imdbID);
+            var movie = await bl.BlMovie.GetMovieByImdbID(imdbID);
 
             if (movie == null)
             {
@@ -139,7 +142,7 @@ namespace WindowsSystem_Backend.Controllers
             _dbContext.Movies.Add(movie);
             await _dbContext.SaveChangesAsync();
 
-            return Ok(BlMovie.getMovieDtoFromMovie(movie));
+            return Ok(bl.BlMovie.getMovieDtoFromMovie(movie));
         }
     }
 }

@@ -6,7 +6,9 @@ namespace WindowsSystem_Backend.BL
 {
     public class BlMovie
     {
-        public static MediaDto getMediaFromMovie(Movie movie)
+        private readonly Bl bl = Factory.GetBL();
+
+        public MediaDto getMediaFromMovie(Movie movie)
         {
             return new MediaDto { 
                 Title = movie.Title,
@@ -17,7 +19,7 @@ namespace WindowsSystem_Backend.BL
             };
         }
 
-        public static GetMovieDto getMovieDtoFromMovie(Movie movie)
+        public GetMovieDto getMovieDtoFromMovie(Movie movie)
         {
             return new GetMovieDto
             {
@@ -31,14 +33,14 @@ namespace WindowsSystem_Backend.BL
                 PosterURL = movie.PosterURL
             };
         }
-        public static async Task<Movie?> GetMovieByImdbID(string imdbID) {
+        public async Task<Movie?> GetMovieByImdbID(string imdbID) {
             var movieDetails = await OmdbApiService.GetMovieByIDAsync(imdbID);
-            return BlJsonConversion.GetMovieFromJson(movieDetails);
+            return bl.BlJsonConversion.GetMovieFromJson(movieDetails);
         }
 
-        public static async Task<IEnumerable<MediaDto>?> GetMoviesBySearch(string s, int? y = null) {
+        public async Task<IEnumerable<MediaDto>?> GetMoviesBySearch(string s, int? y = null) {
             var str = await OmdbApiService.GetMoviesBySearchAsync(s, y);
-            return BlJsonConversion.GetMovieObjFromJson(str);
+            return bl.BlJsonConversion.GetMovieObjFromJson(str);
         }
     }
 }

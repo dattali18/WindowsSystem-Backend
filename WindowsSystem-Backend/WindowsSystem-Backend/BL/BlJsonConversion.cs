@@ -5,19 +5,22 @@ namespace WindowsSystem_Backend.BL
 {
     public class BlJsonConversion
     {
-        public static IEnumerable<MediaDto>? GetMovieObjFromJson(string json)
+        public  IEnumerable<MediaDto>? GetMovieObjFromJson(string json)
         {
-            return JsonMovieDeserialization.GetSearchResults(json);
+            var jsonMovieDeserialization = new JsonMovieDeserialization();
+            return jsonMovieDeserialization.GetSearchResults(json);
         }
 
-        public static DO.Movie? GetMovieFromJson(string json)
+        public  DO.Movie? GetMovieFromJson(string json)
         {
-            return JsonMovieDeserialization.GetMovieResult(json);
+            var jsonMovieDeserialization = new JsonMovieDeserialization();
+            return jsonMovieDeserialization.GetMovieResult(json);
         }
 
-        public static DO.TvSeries? GetTvSeriesFromJson(string json)
+        public  DO.TvSeries? GetTvSeriesFromJson(string json)
         {
-            return JsonMovieDeserialization.GetSeriesResult(json);
+            var jsonMovieDeserialization = new JsonMovieDeserialization();
+            return jsonMovieDeserialization.GetSeriesResult(json);
         }
     }
 
@@ -53,11 +56,11 @@ namespace WindowsSystem_Backend.BL
 
     internal class JsonMovieDeserialization
     {
-        public static IEnumerable<MediaDto>? GetSearchResults(string json)
+        public IEnumerable<MediaDto>? GetSearchResults(string json)
         {
             var searchResponse = JsonConvert.DeserializeObject<SearchResponse>(json);
 
-            var mediaDtos = (
+            return (
                 from response in searchResponse?.Search
                 select new MediaDto { 
                     Title = response.Title,
@@ -67,11 +70,9 @@ namespace WindowsSystem_Backend.BL
                     Poster = response.Poster
                 }
                 ).ToList();
-
-            return mediaDtos;
         }
 
-        public static DO.Movie? GetMovieResult(string json)
+        public DO.Movie? GetMovieResult(string json)
         {
             var movieResult = JsonConvert.DeserializeObject<MovieResult>(json);
 
@@ -114,7 +115,7 @@ namespace WindowsSystem_Backend.BL
             };
         }
 
-        public static DO.TvSeries? GetSeriesResult(string json)
+        public DO.TvSeries? GetSeriesResult(string json)
         {
             var seriesResult = JsonConvert.DeserializeObject<SeriesResult>(json);
 

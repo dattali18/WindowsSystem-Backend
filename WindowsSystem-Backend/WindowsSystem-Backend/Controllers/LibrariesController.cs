@@ -14,6 +14,7 @@ namespace WindowsSystem_Backend.Controllers
     public class LibrariesController : ControllerBase
     {
         private readonly DataContext _dbContext;
+        private readonly Bl bl = Factory.GetBL();
 
         public LibrariesController(DataContext dbContext)
         {
@@ -36,7 +37,7 @@ namespace WindowsSystem_Backend.Controllers
 
             List<GetLibraryDto> librariesDto = (
                     from library in libraries
-                    select BlLibrary.getLibraryDTOs(library, library.Movies, library.TvSeries)
+                    select bl.BlLibrary.getLibraryDTOs(library, library.Movies, library.TvSeries)
                 ).ToList();
 
             return Ok(librariesDto);
@@ -55,6 +56,7 @@ namespace WindowsSystem_Backend.Controllers
                 .Include(l => l.Movies)
                 .Include(l => l.TvSeries)
                 .FirstOrDefaultAsync(i => i.Id == id);
+
             if (library == null)
             {
                 return NotFound();
@@ -64,7 +66,7 @@ namespace WindowsSystem_Backend.Controllers
             List<TvSeries> tvSeries = library.TvSeries;
 
 
-            return Ok(BlLibrary.getLibraryDTOs(library, movies, tvSeries));
+            return Ok(bl.BlLibrary.getLibraryDTOs(library, movies, tvSeries));
         }
 
         // GET - /api/libraries/{id}/movies
@@ -89,7 +91,7 @@ namespace WindowsSystem_Backend.Controllers
 
             List<MediaDto> media = (
                 from movie in movies
-                select BlMovie.getMediaFromMovie(movie)
+                select bl.BlMovie.getMediaFromMovie(movie)
             ).ToList();
 
             return Ok(media);
@@ -117,7 +119,7 @@ namespace WindowsSystem_Backend.Controllers
 
             List<MediaDto> media = (
                 from serie in series
-                select BlTvSeries.getMediaFromTvSeries(serie)
+                select bl.BlTvSeries.getMediaFromTvSeries(serie)
             ).ToList();
 
             return Ok(media);
@@ -139,7 +141,7 @@ namespace WindowsSystem_Backend.Controllers
 
             var librariesDto = (
                     from library in libraries
-                    select BlLibrary.getLibraryDTOs(library, new List<Movie> { }, new List<TvSeries> { })
+                    select bl.BlLibrary.getLibraryDTOs(library, new List<Movie> { }, new List<TvSeries> { })
                 ).ToList();
 
             return Ok(librariesDto);
@@ -163,7 +165,7 @@ namespace WindowsSystem_Backend.Controllers
             _dbContext.Libraries.Add(library);
             await _dbContext.SaveChangesAsync();
 
-            var libraryDto = BL.BlLibrary.getLibraryDTOs(library, new(), new());
+            var libraryDto = bl.BlLibrary.getLibraryDTOs(library, new(), new());
 
             return CreatedAtAction(nameof(GetLibrary), new { id = library.Id }, libraryDto);
         }
@@ -192,7 +194,7 @@ namespace WindowsSystem_Backend.Controllers
 
             if (movie != null)
             {
-                return Ok(BlMovie.getMediaFromMovie(movie));
+                return Ok(bl.BlMovie.getMediaFromMovie(movie));
             }
 
             // Check if the movie already exists in the local database
@@ -200,7 +202,7 @@ namespace WindowsSystem_Backend.Controllers
             if (existingMovie == null)
             {
                 // Movie doesn't exist in the local database, fetch it from the OMDb API
-                var movieFromService = await BlMovie.GetMovieByImdbID(imdbID);
+                var movieFromService = await bl.BlMovie.GetMovieByImdbID(imdbID);
 
                 if (movieFromService == null)
                 {
@@ -214,7 +216,7 @@ namespace WindowsSystem_Backend.Controllers
             library.Movies.Add(existingMovie);
             await _dbContext.SaveChangesAsync();
 
-            return Ok(BlMovie.getMediaFromMovie(existingMovie));
+            return Ok(bl.BlMovie.getMediaFromMovie(existingMovie));
         }
 
         // DELETE - api/libraries/{libraryId}/movies
@@ -270,7 +272,7 @@ namespace WindowsSystem_Backend.Controllers
             if (existingSeries == null)
             {
                 // Movie doesn't exist in the local database, fetch it from the OMDb API
-                var series = await BlTvSeries.GetTvSeriesByImdbID(imdbID);
+                var series = await bl.BlTvSeries.GetTvSeriesByImdbID(imdbID);
 
                 if (series == null)
                 {
@@ -284,7 +286,7 @@ namespace WindowsSystem_Backend.Controllers
             library.TvSeries.Add(existingSeries);
             await _dbContext.SaveChangesAsync();
 
-            return Ok(BlTvSeries.getMediaFromTvSeries(existingSeries));
+            return Ok(bl.BlTvSeries.getMediaFromTvSeries(existingSeries));
         }
 
         [HttpDelete("{libraryId}/tvseries")]
@@ -305,6 +307,7 @@ namespace WindowsSystem_Backend.Controllers
             }
 
             var series = library.TvSeries.FirstOrDefault(i => i.ImdbID == imdbID);
+
             if (series == null)
             {
                 return NotFound();
@@ -352,6 +355,7 @@ namespace WindowsSystem_Backend.Controllers
                     .Include(l => l.Movies)
                     .Include(l => l.TvSeries)
                     .FirstOrDefaultAsync(i => i.Id == id);
+                    
             if (library == null)
             {
                 return NotFound();

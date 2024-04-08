@@ -46,7 +46,7 @@ namespace WindowsSystem_Backend.Controllers
 
             var moviesDto = (
                 from movie in movies
-                select bl.BlMovie.getMovieDtoFromMovie(movie)
+                select bl.BlMovie.GetMovieDtoFromMovie(movie)
                 ).ToList();
 
             return Ok(moviesDto);
@@ -74,7 +74,7 @@ namespace WindowsSystem_Backend.Controllers
                 return NotFound();
             }
 
-            return Ok(bl.BlMovie.getMovieDtoFromMovie(movie));
+            return Ok(bl.BlMovie.GetMovieDtoFromMovie(movie));
         }
 
         // GET - /api/movies/search/{imdbID}
@@ -94,7 +94,7 @@ namespace WindowsSystem_Backend.Controllers
                 return BadRequest();
             }
 
-            return Ok(bl.BlMovie.getMovieDtoFromMovie(movie));
+            return Ok(bl.BlMovie.GetMovieDtoFromMovie(movie));
         }
 
         // GET - /api/movies/?s=[SEARCH_TERM]&y=[YEAR]
@@ -127,7 +127,7 @@ namespace WindowsSystem_Backend.Controllers
             var existingMovie = await _dbContext.Movies.FirstOrDefaultAsync(movie => movie.ImdbID == imdbID);
             if (existingMovie != null)
             {
-                return Ok(bl.BlMovie.getMovieDtoFromMovie(existingMovie));
+                return Ok(bl.BlMovie.GetMovieDtoFromMovie(existingMovie));
             }
 
             // var str = await OmdbApiService.GetMovieByIDAsync(imdbID);
@@ -142,7 +142,7 @@ namespace WindowsSystem_Backend.Controllers
             _dbContext.Movies.Add(movie);
             await _dbContext.SaveChangesAsync();
 
-            return Ok(bl.BlMovie.getMovieDtoFromMovie(movie));
+            return Ok(bl.BlMovie.GetMovieDtoFromMovie(movie));
         }
     }
 }

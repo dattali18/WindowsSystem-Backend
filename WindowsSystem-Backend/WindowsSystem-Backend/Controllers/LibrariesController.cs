@@ -37,7 +37,7 @@ namespace WindowsSystem_Backend.Controllers
 
             List<GetLibraryDto> librariesDto = (
                     from library in libraries
-                    select bl.BlLibrary.getLibraryDTOs(library, library.Movies, library.TvSeries)
+                    select bl.BlLibrary.GetLibraryDTOs(library, library.Movies, library.TvSeries)
                 ).ToList();
 
             return Ok(librariesDto);
@@ -66,7 +66,7 @@ namespace WindowsSystem_Backend.Controllers
             List<TvSeries> tvSeries = library.TvSeries;
 
 
-            return Ok(bl.BlLibrary.getLibraryDTOs(library, movies, tvSeries));
+            return Ok(bl.BlLibrary.GetLibraryDTOs(library, movies, tvSeries));
         }
 
         // GET - /api/libraries/{id}/movies
@@ -91,7 +91,7 @@ namespace WindowsSystem_Backend.Controllers
 
             List<MediaDto> media = (
                 from movie in movies
-                select bl.BlMovie.getMediaFromMovie(movie)
+                select bl.BlMovie.GetMediaFromMovie(movie)
             ).ToList();
 
             return Ok(media);
@@ -119,7 +119,7 @@ namespace WindowsSystem_Backend.Controllers
 
             List<MediaDto> media = (
                 from serie in series
-                select bl.BlTvSeries.getMediaFromTvSeries(serie)
+                select bl.BlTvSeries.GetMediaFromTvSeries(serie)
             ).ToList();
 
             return Ok(media);
@@ -141,7 +141,7 @@ namespace WindowsSystem_Backend.Controllers
 
             var librariesDto = (
                     from library in libraries
-                    select bl.BlLibrary.getLibraryDTOs(library, new List<Movie> { }, new List<TvSeries> { })
+                    select bl.BlLibrary.GetLibraryDTOs(library, new List<Movie> { }, new List<TvSeries> { })
                 ).ToList();
 
             return Ok(librariesDto);
@@ -165,7 +165,7 @@ namespace WindowsSystem_Backend.Controllers
             _dbContext.Libraries.Add(library);
             await _dbContext.SaveChangesAsync();
 
-            var libraryDto = bl.BlLibrary.getLibraryDTOs(library, new(), new());
+            var libraryDto = bl.BlLibrary.GetLibraryDTOs(library, new(), new());
 
             return CreatedAtAction(nameof(GetLibrary), new { id = library.Id }, libraryDto);
         }
@@ -194,7 +194,7 @@ namespace WindowsSystem_Backend.Controllers
 
             if (movie != null)
             {
-                return Ok(bl.BlMovie.getMediaFromMovie(movie));
+                return Ok(bl.BlMovie.GetMediaFromMovie(movie));
             }
 
             // Check if the movie already exists in the local database
@@ -216,7 +216,7 @@ namespace WindowsSystem_Backend.Controllers
             library.Movies.Add(existingMovie);
             await _dbContext.SaveChangesAsync();
 
-            return Ok(bl.BlMovie.getMediaFromMovie(existingMovie));
+            return Ok(bl.BlMovie.GetMediaFromMovie(existingMovie));
         }
 
         // DELETE - api/libraries/{libraryId}/movies
@@ -286,7 +286,7 @@ namespace WindowsSystem_Backend.Controllers
             library.TvSeries.Add(existingSeries);
             await _dbContext.SaveChangesAsync();
 
-            return Ok(bl.BlTvSeries.getMediaFromTvSeries(existingSeries));
+            return Ok(bl.BlTvSeries.GetMediaFromTvSeries(existingSeries));
         }
 
         [HttpDelete("{libraryId}/tvseries")]
@@ -321,7 +321,7 @@ namespace WindowsSystem_Backend.Controllers
 
         // PUT - api/libraries/{id}
         [HttpPut]
-        public async Task<IActionResult> updateLibrary(int id, CreateLibraryDto libraryDto)
+        public async Task<IActionResult> UpdateLibrary(int id, CreateLibraryDto libraryDto)
         {
             if (_dbContext == null)
             {

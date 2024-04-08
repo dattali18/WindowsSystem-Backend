@@ -8,15 +8,16 @@ namespace WindowsSystem_Backend.BL
 {
     public class BlLibrary
     {
-        private readonly Bl bl = Factory.GetBL();
         
-        public GetLibraryDto getLibraryDTOs(DO.Library library, List<Movie> movies, List<TvSeries> tvSeries)
+        public GetLibraryDto GetLibraryDTOs(DO.Library library, List<Movie> movies, List<TvSeries> tvSeries)
         {
+            var blMovie = new BlMovie();
+            var blTvSeries = new BlTvSeries();
             var movieMedia = from movie in movies
-                                select bl.BlMovie.getMediaFromMovie(movie);
+                                select blMovie.GetMediaFromMovie(movie);
 
             var seriesMedia = from series in tvSeries
-                              select bl.BlTvSeries.getMediaFromTvSeries(series);
+                              select blTvSeries.GetMediaFromTvSeries(series);
 
             List<MediaDto> media = movieMedia.Concat(seriesMedia).ToList();
 

@@ -6,8 +6,7 @@ namespace WindowsSystem_Backend.BL
 {
     public class BlTvSeries
     {
-        private readonly Bl bl = Factory.GetBL();
-        public MediaDto getMediaFromTvSeries(TvSeries series)
+        public MediaDto GetMediaFromTvSeries(TvSeries series)
         {
             return new MediaDto
             {
@@ -20,7 +19,9 @@ namespace WindowsSystem_Backend.BL
 
         public async Task<TvSeries?> GetTvSeriesByImdbID(string imdbID) {
             var seriesDetails = await OmdbApiService.GetSeriesByIDAsync(imdbID);
-            return bl.BlJsonConversion.GetTvSeriesFromJson(seriesDetails);
+
+            var jsonConvertor = new BL.BlJsonConversion();
+            return jsonConvertor.GetTvSeriesFromJson(seriesDetails);
         }
     }
 }

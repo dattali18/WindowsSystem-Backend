@@ -1,10 +1,14 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
 using Microsoft.EntityFrameworkCore;
 
-using WindowsSystem_Backend.DAL;
 using WindowsSystem_Backend.BL.DTO;
 using WindowsSystem_Backend.BL;
+
+using WindowsSystem_Backend.DAL;
+using WindowsSystem_Backend.DAL.Implementations;
+using WindowsSystem_Backend.DAL.Interfaces;
 
 namespace WindowsSystem_Backend.Controllers
 {
@@ -19,6 +23,10 @@ namespace WindowsSystem_Backend.Controllers
 
         private readonly Bl bl = Factory.GetBL();
 
+        private readonly IReadFromDataBase _readFromDataBase;
+
+        private readonly IWriteToDataBase _writeToDataBase;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MoviesController"/> class.
         /// </summary>
@@ -26,6 +34,9 @@ namespace WindowsSystem_Backend.Controllers
         public MoviesController(DataContext dataContext)
         {
             _dbContext = dataContext;
+
+            _readFromDataBase = new  ReadFromDataBase(_dbContext);
+            _writeToDataBase = new  WriteToDataBase(_dbContext);
         }
 
         // GET - /api/movies
@@ -43,7 +54,8 @@ namespace WindowsSystem_Backend.Controllers
             }
 
             // TODO: GetAllMoviesAsync()
-            var movies = await _dbContext.Movies.ToListAsync();
+            // var movies = await _dbContext.Movies.ToListAsync();
+            var movies = await _readFromDataBase.GetMoviesAsync();
             // TODO: move that into a function in the BL
             var moviesDto = (
                 from movie in movies
@@ -68,7 +80,8 @@ namespace WindowsSystem_Backend.Controllers
                 return NotFound();
             }
             // TODO: GetMovieByIdAsync(id)
-            var movie = await _dbContext.Movies.FindAsync(id);
+            // var movie = await _dbContext.Movies.FindAsync(id);
+            var movie = await _readFromDataBase.GetMovieByIdAsync(id);
 
             if (movie == null)
             {
@@ -127,7 +140,9 @@ namespace WindowsSystem_Backend.Controllers
         {
             // check if the movie is already in the DB
             // TODO: GetMovieByImdbIDAsync(imdbID)
-            var existingMovie = await _dbContext.Movies.FirstOrDefaultAsync(movie => movie.ImdbID == imdbID);
+            // var existingMovie = await _dbContext.Movies.FirstOrDefaultAsync(movie => movie.ImdbID == imdbID);
+            var existingMovie = await _readFromDataBase.GetMovieByImdbIdAsync(imdbID);
+
             if (existingMovie != null)
             {
                 return Ok(bl.BlMovie.GetMovieDtoFromMovie(existingMovie));
@@ -141,8 +156,9 @@ namespace WindowsSystem_Backend.Controllers
             }
 
             // TODO: AddMovieAsync(movie)
-            _dbContext.Movies.Add(movie);
-            await _dbContext.SaveChangesAsync();
+            // _dbContext.Movies.Add(movie);
+            // await _dbContext.SaveChangesAsync();
+            await _writeToDataBase.AddMovieAsync(movie);
 
             var movieDto = bl.BlMovie.GetMovieDtoFromMovie(movie);
             return Ok(movieDto);

@@ -1,6 +1,6 @@
 ﻿namespace WindowsSystem_Backend.BL.DTO
 {
-    public class GetLibreryDto
+    public class GetLibraryDto
     {
         public int Id { get; set; } 
         public string? Name { get; set; }

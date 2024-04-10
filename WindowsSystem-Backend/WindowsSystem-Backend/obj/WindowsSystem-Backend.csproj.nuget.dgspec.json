@@ -1,27 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\danie\\source\\repos\\WindowsSystem-Backend\\WindowsSystem-Backend\\WindowsSystem-Backend\\WindowsSystem-Backend.csproj": {}
+    "/Users/danielattali/Developer/WindowsSystem-Backend/WindowsSystem-Backend/WindowsSystem-Backend/WindowsSystem-Backend.csproj": {}
   },
   "projects": {
-    "C:\\Users\\danie\\source\\repos\\WindowsSystem-Backend\\WindowsSystem-Backend\\WindowsSystem-Backend\\WindowsSystem-Backend.csproj": {
+    "/Users/danielattali/Developer/WindowsSystem-Backend/WindowsSystem-Backend/WindowsSystem-Backend/WindowsSystem-Backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\danie\\source\\repos\\WindowsSystem-Backend\\WindowsSystem-Backend\\WindowsSystem-Backend\\WindowsSystem-Backend.csproj",
+        "projectUniqueName": "/Users/danielattali/Developer/WindowsSystem-Backend/WindowsSystem-Backend/WindowsSystem-Backend/WindowsSystem-Backend.csproj",
         "projectName": "WindowsSystem-Backend",
-        "projectPath": "C:\\Users\\danie\\source\\repos\\WindowsSystem-Backend\\WindowsSystem-Backend\\WindowsSystem-Backend\\WindowsSystem-Backend.csproj",
-        "packagesPath": "C:\\Users\\danie\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\danie\\source\\repos\\WindowsSystem-Backend\\WindowsSystem-Backend\\WindowsSystem-Backend\\obj\\",
+        "projectPath": "/Users/danielattali/Developer/WindowsSystem-Backend/WindowsSystem-Backend/WindowsSystem-Backend/WindowsSystem-Backend.csproj",
+        "packagesPath": "/Users/danielattali/.nuget/packages/",
+        "outputPath": "/Users/danielattali/Developer/WindowsSystem-Backend/WindowsSystem-Backend/WindowsSystem-Backend/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\danie\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/danielattali/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -34,11 +32,6 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -91,7 +84,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.420/RuntimeIdentifierGraph.json"
         }
       }
     }

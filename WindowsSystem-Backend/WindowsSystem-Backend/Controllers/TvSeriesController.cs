@@ -1,13 +1,17 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using WindowsSystem_Backend.BL;
-using WindowsSystem_Backend.DAL.Interfaces;
-using WindowsSystem_Backend.DAL;
-using WindowsSystem_Backend.DAL.Implementations;
+﻿using Microsoft.AspNetCore.Mvc;
+
 using WindowsSystem_Backend.BL.DTO;
+using WindowsSystem_Backend.BL;
+
+using WindowsSystem_Backend.DAL;
+using WindowsSystem_Backend.DAL.Interfaces;
+using WindowsSystem_Backend.DAL.Implementations;
 
 namespace WindowsSystem_Backend.Controllers
 {
+    /// <summary>
+    /// Controller for managing tv-series-related operations.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class TvSeriesController : ControllerBase
@@ -32,19 +36,15 @@ namespace WindowsSystem_Backend.Controllers
             _writeToDataBase = new WriteToDataBase(_dbContext);
         }
 
-        // GET - api/tvSeries
+        // GET - api/TvSeries
 
         /// <summary>
-        /// Retrives all Tv Series
+        /// Retrieves all Tv Series
         /// </summary>
         /// <returns>A list of TvSeriesDTOs</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<GetTvSeriesDTO>>> GetTvSeries()
         {
-            if (_dbContext == null)
-            {
-                return NotFound();
-            }
 
             var Series = await _readFromDataBase.GetTvSeriesAsync();
             var seriesDTO = (
@@ -55,7 +55,7 @@ namespace WindowsSystem_Backend.Controllers
             return Ok(seriesDTO);
         }
 
-        // GET - /api/tvSeries/{id}
+        // GET - /api/TvSeries/{id}
 
         /// <summary>
         /// Retrieves a series by its ID.
@@ -65,11 +65,6 @@ namespace WindowsSystem_Backend.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<GetTvSeriesDTO>> GetTvSeries(int id)
         {
-            if (_dbContext == null)
-            {
-                return NotFound();
-            }
-
             var series = await _readFromDataBase.GetTvSerieByIdAsync(id);
 
             if (series == null)
@@ -81,14 +76,14 @@ namespace WindowsSystem_Backend.Controllers
             return Ok(seriesDto);
         }
 
-        // GET - /api/tvSeries/search/{imdbID}
+        // GET - /api/TvSeries/search/{imdbID}
 
         /// <summary>
         /// Retrieves a series by its IMDb ID.
         /// </summary>
         /// <param name="imdbID">The IMDb ID of the series.</param>
         /// <returns>The series DTO.</returns>
-        [HttpGet("{search/{imdbID}}")]
+        [HttpGet("search/{imdbID}")]
         public async Task<ActionResult<GetTvSeriesDTO>> GetTvSeries(string imdbID)
         {
             var series = await bl.BlTvSeries.GetTvSeriesByImdbID(imdbID);
@@ -102,7 +97,7 @@ namespace WindowsSystem_Backend.Controllers
             return Ok(seriesDto);
         }
 
-        // GET - /api/tvSeries/?s=[SEARCH_TERM]&y=[YEAR]
+        // GET - /api/TvSeries/?s=[SEARCH_TERM]&y=[YEAR]
 
         /// <summary>
         /// Retrieves series by search term and optional year.
@@ -111,13 +106,13 @@ namespace WindowsSystem_Backend.Controllers
         /// <param name="y">The year (optional).</param>
         /// <returns>A list of media DTOs.</returns>
         [HttpGet("search")]
-        public async Task<ActionResult<IEnumerable<MediaDto>>> GetTvSeriesBySerach(string s, int? y = null)
+        public async Task<ActionResult<IEnumerable<MediaDto>>> GetTvSeriesBySearch(string s, int? y = null)
         {
             var series = await bl.BlTvSeries.GetTvSeriesBySearch(s, y);
             return Ok(series);
         }
 
-        // POST - api/tvSeries
+        // POST - api/TvSeries
 
         /// <summary>
         /// Adds a new series to the database.

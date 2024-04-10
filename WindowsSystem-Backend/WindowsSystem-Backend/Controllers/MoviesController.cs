@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 
 using WindowsSystem_Backend.BL.DTO;
 using WindowsSystem_Backend.BL;
@@ -39,7 +36,7 @@ namespace WindowsSystem_Backend.Controllers
             _writeToDataBase = new  WriteToDataBase(_dbContext);
         }
 
-        // GET - /api/movies
+        // GET - /api/Movies
 
         /// <summary>
         /// Retrieves all movies.
@@ -48,14 +45,8 @@ namespace WindowsSystem_Backend.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<GetMovieDto>>> GetMovies()
         {
-            if (_dbContext == null)
-            {
-                return NotFound();
-            }
-
-            // TODO: GetAllMoviesAsync()
-            // var movies = await _dbContext.Movies.ToListAsync();
             var movies = await _readFromDataBase.GetMoviesAsync();
+            
             // TODO: move that into a function in the BL
             var moviesDto = (
                 from movie in movies
@@ -65,7 +56,7 @@ namespace WindowsSystem_Backend.Controllers
             return Ok(moviesDto);
         }
 
-        // GET - /api/movies/{id}
+        // GET - /api/Movies/{id}
 
         /// <summary>
         /// Retrieves a movie by its ID.
@@ -75,12 +66,6 @@ namespace WindowsSystem_Backend.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<GetMovieDto>> GetMovie(int id)
         {
-            if (_dbContext == null)
-            {
-                return NotFound();
-            }
-            // TODO: GetMovieByIdAsync(id)
-            // var movie = await _dbContext.Movies.FindAsync(id);
             var movie = await _readFromDataBase.GetMovieByIdAsync(id);
 
             if (movie == null)
@@ -92,7 +77,7 @@ namespace WindowsSystem_Backend.Controllers
             return Ok(movieDto);
         }
 
-        // GET - /api/movies/search/{imdbID}
+        // GET - /api/Movies/search/{imdbID}
 
         /// <summary>
         /// Retrieves a movie by its IMDb ID.
@@ -113,7 +98,7 @@ namespace WindowsSystem_Backend.Controllers
             return Ok(movieDto);
         }
 
-        // GET - /api/movies/?s=[SEARCH_TERM]&y=[YEAR]
+        // GET - /api/Movies/search/?s=[SEARCH_TERM]&y=[YEAR]
 
         /// <summary>
         /// Retrieves movies by search term and optional year.
@@ -128,7 +113,7 @@ namespace WindowsSystem_Backend.Controllers
             return Ok(movies);
         }
 
-        // POST - api/movies
+        // POST - api/Movies
 
         /// <summary>
         /// Adds a new movie to the database.
@@ -139,8 +124,6 @@ namespace WindowsSystem_Backend.Controllers
         public async Task<ActionResult<GetMovieDto>> PostMovie(string imdbID)
         {
             // check if the movie is already in the DB
-            // TODO: GetMovieByImdbIDAsync(imdbID)
-            // var existingMovie = await _dbContext.Movies.FirstOrDefaultAsync(movie => movie.ImdbID == imdbID);
             var existingMovie = await _readFromDataBase.GetMovieByImdbIdAsync(imdbID);
 
             if (existingMovie != null)
@@ -156,8 +139,6 @@ namespace WindowsSystem_Backend.Controllers
             }
 
             // TODO: AddMovieAsync(movie)
-            // _dbContext.Movies.Add(movie);
-            // await _dbContext.SaveChangesAsync();
             await _writeToDataBase.AddMovieAsync(movie);
 
             var movieDto = bl.BlMovie.GetMovieDtoFromMovie(movie);

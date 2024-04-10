@@ -10,7 +10,7 @@ namespace WindowsSystem_Backend
         {
             var builder = WebApplication.CreateBuilder(args);
             
-            // Connectin to DB
+            // Connecting to DB
             builder.Services.AddDbContext<DataContext>(options =>
                options.UseSqlServer(builder.Configuration.GetConnectionString("AppContext")));
 

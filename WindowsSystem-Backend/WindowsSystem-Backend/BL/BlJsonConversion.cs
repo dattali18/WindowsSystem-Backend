@@ -7,19 +7,25 @@ namespace WindowsSystem_Backend.BL
     {
         public  IEnumerable<MediaDto>? GetMovieObjFromJson(string json)
         {
-            var jsonMovieDeserialization = new JsonMovieDeserialization();
+            var jsonMovieDeserialization = new JsonMediaDeserialization();
             return jsonMovieDeserialization.GetSearchResults(json);
+        }
+
+        public IEnumerable<MediaDto>? GetTvSeriesObjFromJson(string json) 
+        {
+            var jsonTvSeriesDeserialization = new JsonMediaDeserialization();
+            return jsonTvSeriesDeserialization.GetSearchResults(json);
         }
 
         public  DO.Movie? GetMovieFromJson(string json)
         {
-            var jsonMovieDeserialization = new JsonMovieDeserialization();
+            var jsonMovieDeserialization = new JsonMediaDeserialization();
             return jsonMovieDeserialization.GetMovieResult(json);
         }
 
         public  DO.TvSeries? GetTvSeriesFromJson(string json)
         {
-            var jsonMovieDeserialization = new JsonMovieDeserialization();
+            var jsonMovieDeserialization = new JsonMediaDeserialization();
             return jsonMovieDeserialization.GetSeriesResult(json);
         }
     }
@@ -54,7 +60,7 @@ namespace WindowsSystem_Backend.BL
         public string? TotalSeasons { get; set; }
     }
 
-    internal class JsonMovieDeserialization
+    internal class JsonMediaDeserialization
     {
         public IEnumerable<MediaDto>? GetSearchResults(string json)
         {

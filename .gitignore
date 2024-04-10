@@ -1,3 +1,18 @@
+.DS_Store
 .github/
 .vs/
 WindowsSystem-Backend/.vs/
+
+
+# Exclude files used for debugging or running
+.dll
+.exe
+*.pdb
+*.log
+*.tmp
+*.bak
+*.swp
+# Add more file extensions if needed
+
+/WindowsSystem-Backend/WindowsSystem-Backend/obj
+WindowsSystem-Backend/WindowsSystem-Backend/bin

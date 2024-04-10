@@ -2,8 +2,6 @@
 .github/
 .vs/
 WindowsSystem-Backend/.vs/
-WindowsSystem-Backend/obj/
-WindowsSystem-Backend/bin/
 
 
 # Exclude files used for debugging or running
@@ -16,5 +14,5 @@ WindowsSystem-Backend/bin/
 *.swp
 # Add more file extensions if needed
 
-WindowsSystem-Backend/WindowsSystem-Backend/bin/Debug/net6.0/
-WindowsSystem-Backend/WindowsSystem-Backend/obj/Debug/net6.0/
+/WindowsSystem-Backend/WindowsSystem-Backend/obj
+WindowsSystem-Backend/WindowsSystem-Backend/bin

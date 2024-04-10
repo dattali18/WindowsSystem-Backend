@@ -15,5 +15,5 @@ build_property.EnableGeneratedComInterfaceComImportInterop =
 build_property.RazorLangVersion = 6.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\yairl\source\repos\WindowsSystem-Backend\WindowsSystem-Backend\WindowsSystem-Backend
+build_property.MSBuildProjectDirectory = /Users/danielattali/Developer/WindowsSystem-Backend/WindowsSystem-Backend/WindowsSystem-Backend
 build_property._RazorSourceGeneratorDebug = 

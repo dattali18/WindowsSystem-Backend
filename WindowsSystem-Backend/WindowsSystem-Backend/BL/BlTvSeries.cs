@@ -13,7 +13,10 @@ namespace WindowsSystem_Backend.BL
                 Title = series.Title,
                 ImdbID = series.ImdbID,
                 Poster = series.PosterURL,
-                Year = $"{series.StartingYear}-{series.EndingYear}"
+                Year = $"{series.StartingYear}-{series.EndingYear}",
+                Type = "series",
+                Genre = series.Genre,
+                Rating = $"{series.Rating}"
             };
         }
 

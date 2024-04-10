@@ -11,5 +11,9 @@
         public string? Poster { get; set; }
 
         public string? ImdbID { get; set; }
+
+        public string? Genre { get; set; }
+
+        public string? Rating { get; set; }
     }
 }

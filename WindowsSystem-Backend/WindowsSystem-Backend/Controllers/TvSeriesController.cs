@@ -7,5 +7,6 @@ namespace WindowsSystem_Backend.Controllers
     [ApiController]
     public class TvSeriesController : ControllerBase
     {
+        // TODO: Do like MovieController
     }
 }

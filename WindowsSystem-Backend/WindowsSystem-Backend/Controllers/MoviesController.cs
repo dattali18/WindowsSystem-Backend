@@ -86,6 +86,12 @@ namespace WindowsSystem_Backend.Controllers
         [HttpPost]
         public async Task<ActionResult<GetMovieDto>> PostMovie(string imdbID)
         {
+            // check if the context is not null
+            if (_dbContext == null)
+            {
+                return NotFound();
+            }
+
             // check if the movie is allready in the DB
             var existingMovie = await _dbContext.Movies.FirstOrDefaultAsync(movie => movie.ImdbID == imdbID);
             if (existingMovie != null)

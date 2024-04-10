@@ -10,7 +10,7 @@ namespace WindowsSystem_Backend.DAL.Interfaces
 
         Task<Movie> UpdateMovieAsync(Movie movie);
 
-        Task DeleteMovieAsync(int id);
+        Task DeleteMovieAsync(Movie movie);
 
         // TV Series
 
@@ -18,7 +18,7 @@ namespace WindowsSystem_Backend.DAL.Interfaces
 
         Task<TvSeries> UpdateTvSerieAsync(TvSeries tvSerie);
 
-        Task DeleteTvSerieAsync(int id);
+        Task DeleteTvSerieAsync(TvSeries tvSeries);
 
         // Libraries
 
@@ -34,6 +34,6 @@ namespace WindowsSystem_Backend.DAL.Interfaces
 
         Task<Library> UpdateLibraryRemoveTvSerieAsync(Library library, TvSeries tvSerie);
 
-        Task DeleteLibraryAsync(int id);
+        Task DeleteLibraryAsync(Library library);
     }
 }

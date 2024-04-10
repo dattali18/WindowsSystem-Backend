@@ -8,7 +8,7 @@ namespace WindowsSystem_Backend.DAL.Interfaces
 
         Task<IEnumerable<Movie>> GetMoviesAsync();
 
-        Task<Movie?> GetMovieByImdbIDAsync(string imdbID);
+        Task<Movie?> GetMovieByImdbIdAsync(string imdbID);
 
         Task<Movie?> GetMovieByIdAsync(int id);
 
@@ -16,7 +16,7 @@ namespace WindowsSystem_Backend.DAL.Interfaces
 
         Task<IEnumerable<TvSeries>> GetTvSeriesAsync();
 
-        Task<TvSeries?> GetTvSerieByImdbIDAsync(string imdbID);
+        Task<TvSeries?> GetTvSerieByImdbIdAsync(string imdbID);
 
         Task<TvSeries?> GetTvSerieByIdAsync(int id);
 
@@ -24,6 +24,7 @@ namespace WindowsSystem_Backend.DAL.Interfaces
 
         Task<IEnumerable<Library>> GetLibrariesAsync();
         Task<IEnumerable<Library>> GetLibrariesWithMediasAsync();
+        Task<IEnumerable<Library>> GetLibrariesByNameAsync(string name);
 
         Task<Library?> GetLibraryByIdAsync(int id);
 
@@ -33,7 +34,5 @@ namespace WindowsSystem_Backend.DAL.Interfaces
 
         Task<Library?> GetLibraryByIdWithTvSeriesAsync(int id);
 
-        // with medias
-        Task<IEnumerable<Library>> GetLibrariesByNameAsync(string name);
     }
 }

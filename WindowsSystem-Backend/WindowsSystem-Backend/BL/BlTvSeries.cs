@@ -15,7 +15,5 @@ namespace WindowsSystem_Backend.BL
                 Year = $"{series.StartingYear}-{series.EndingYear}"
             };
         }
-
-        // for conventions
     }
 }

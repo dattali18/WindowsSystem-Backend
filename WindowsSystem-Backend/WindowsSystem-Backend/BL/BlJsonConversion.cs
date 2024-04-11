@@ -8,13 +8,13 @@ namespace WindowsSystem_Backend.BL
         public  IEnumerable<MediaDto>? GetMovieObjFromJson(string json)
         {
             var jsonMovieDeserialization = new JsonMediaDeserialization();
-            return jsonMovieDeserialization.GetSearchResults(json);
+            return jsonMovieDeserialization.GetSearchResults(json, "movie");
         }
 
         public IEnumerable<MediaDto>? GetTvSeriesObjFromJson(string json) 
         {
             var jsonTvSeriesDeserialization = new JsonMediaDeserialization();
-            return jsonTvSeriesDeserialization.GetSearchResults(json);
+            return jsonTvSeriesDeserialization.GetSearchResults(json, "serie");
         }
 
         public  DO.Movie? GetMovieFromJson(string json)
@@ -32,9 +32,17 @@ namespace WindowsSystem_Backend.BL
 
     internal class SearchResponse
     {
-        public List<MediaDto>? Search { get; set; }
+        public List<MediaResult>? Search { get; set; }
         public string? TotalResult { get; set; }
         public bool Response { get; set; }
+    }
+
+    internal class MediaResult
+    {
+        public string? Title { get; set; }
+        public string? Year { get; set; }
+        public string? ImdbID { get; set; }
+        public string? Poster { get; set; }
     }
 
     internal class MovieResult
@@ -51,7 +59,7 @@ namespace WindowsSystem_Backend.BL
     internal class SeriesResult
     {
         public string? Title { get; set; }
-        public string? Years { get; set; }
+        public string? Year { get; set; }
         public string? Genre { get; set; }
         public string? ImdbID { get; set; }
         public string? ImdbRating { get; set; }
@@ -62,9 +70,14 @@ namespace WindowsSystem_Backend.BL
 
     internal class JsonMediaDeserialization
     {
-        public IEnumerable<MediaDto>? GetSearchResults(string json)
+        public IEnumerable<MediaDto>? GetSearchResults(string json, string type)
         {
             var searchResponse = JsonConvert.DeserializeObject<SearchResponse>(json);
+
+            if(searchResponse?.Search == null)
+            {
+                return new List<MediaDto>{ };
+            }
 
             return (
                 from response in searchResponse?.Search
@@ -72,8 +85,8 @@ namespace WindowsSystem_Backend.BL
                     Title = response.Title,
                     Year = response.Year,
                     ImdbID = response.ImdbID,
-                    Type = response.Type,
-                    Poster = response.Poster
+                    Poster = response.Poster,
+                    Type = type
                 }
                 ).ToList();
         }
@@ -88,23 +101,20 @@ namespace WindowsSystem_Backend.BL
             }
 
             // parsing the year for movie
-            int year;
-            if(!int.TryParse(movieResult.Year, out year))
+            if (!int.TryParse(movieResult.Year, out int year))
             {
                 year = 1900;
-            } 
-  
+            }
+
 
             // parsing the rating for movie
-            double rating;
-            if(!double.TryParse(movieResult.ImdbRating, out rating))
+            if (!double.TryParse(movieResult.ImdbRating, out double rating))
             {
                 rating = 0;
             }
 
-            int time;
 
-            if(!int.TryParse(movieResult.Runtime?.Split()[0], out time))
+            if (!int.TryParse(movieResult.Runtime?.Split()[0], out int time))
             {
                 time = 0;
             }
@@ -132,7 +142,7 @@ namespace WindowsSystem_Backend.BL
 
             // parsing the year for movie
             // Split the string at the hyphen and store results in an array
-            string years = seriesResult.Years ?? "";
+            string years = seriesResult.Year ?? "";
             string[] numbers = years.Split('-');
 
 
@@ -152,15 +162,13 @@ namespace WindowsSystem_Backend.BL
 
 
             // parsing the rating for movie
-            double rating;
-            if (!double.TryParse(seriesResult.ImdbRating, out rating))
+            if (!double.TryParse(seriesResult.ImdbRating, out double rating))
             {
                 rating = 0;
             }
 
-            int time;
 
-            if (!int.TryParse(seriesResult.Runtime?.Split()[0], out time))
+            if (!int.TryParse(seriesResult.Runtime?.Split()[0], out int time))
             {
                 time = 0;
             }

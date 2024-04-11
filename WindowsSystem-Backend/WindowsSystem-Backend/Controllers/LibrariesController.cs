@@ -158,10 +158,10 @@ namespace WindowsSystem_Backend.Controllers
             var libraries = await _readFromDataBase.GetLibrariesByNameAsync(name);
             libraries = libraries.ToList();
 
-            if (libraries.Any())
-            {
-                return NotFound();
-            }
+            // if (libraries.Any())
+            // {
+            //     return NotFound();
+            // }
 
             // TODO: move that into a function in the BL
             var librariesDto = (

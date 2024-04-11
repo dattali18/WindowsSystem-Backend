@@ -15,8 +15,6 @@ namespace WindowsSystem_Backend.BL
                 Poster = movie.PosterURL,
                 Year = $"{movie.Year}",
                 Type = "movie",
-                Genre = movie.Genre,
-                Rating = $"{movie.Rating}"
             };
         }
 

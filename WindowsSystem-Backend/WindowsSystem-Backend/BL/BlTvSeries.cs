@@ -15,8 +15,6 @@ namespace WindowsSystem_Backend.BL
                 Poster = series.PosterURL,
                 Year = $"{series.StartingYear}-{series.EndingYear}",
                 Type = "series",
-                Genre = series.Genre,
-                Rating = $"{series.Rating}"
             };
         }
 

@@ -25,8 +25,8 @@ namespace WindowsSystem_Backend.BL
 
         public  DO.TvSeries? GetTvSeriesFromJson(string json)
         {
-            var jsonMovieDeserialization = new JsonMediaDeserialization();
-            return jsonMovieDeserialization.GetSeriesResult(json);
+            var jsonSeriesDeserialization = new JsonMediaDeserialization();
+            return jsonSeriesDeserialization.GetSeriesResult(json);
         }
     }
 
@@ -51,7 +51,7 @@ namespace WindowsSystem_Backend.BL
     internal class SeriesResult
     {
         public string? Title { get; set; }
-        public string? Years { get; set; }
+        public string? Year { get; set; }
         public string? Genre { get; set; }
         public string? ImdbID { get; set; }
         public string? ImdbRating { get; set; }
@@ -132,7 +132,7 @@ namespace WindowsSystem_Backend.BL
 
             // parsing the year for movie
             // Split the string at the hyphen and store results in an array
-            string years = seriesResult.Years ?? "";
+            string years = seriesResult.Year ?? "";
             string[] numbers = years.Split('-');
 
 
@@ -150,7 +150,6 @@ namespace WindowsSystem_Backend.BL
                 }
             }
 
-
             // parsing the rating for movie
             double rating;
             if (!double.TryParse(seriesResult.ImdbRating, out rating))
@@ -165,6 +164,12 @@ namespace WindowsSystem_Backend.BL
                 time = 0;
             }
 
+            int totalSeasons;
+            if (!int.TryParse(seriesResult.TotalSeasons, out totalSeasons)) 
+            { 
+                totalSeasons = 0;
+            }
+
             return new DO.TvSeries
             {
                 Title = seriesResult.Title,
@@ -172,6 +177,7 @@ namespace WindowsSystem_Backend.BL
                 PosterURL = seriesResult.Poster,
                 StartingYear = startYear,
                 EndingYear = endYear,
+                TotalSeasons = totalSeasons,
                 ImdbID = seriesResult.ImdbID,
                 Rating = rating,
                 Time = time

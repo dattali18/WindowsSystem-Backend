@@ -188,11 +188,9 @@ namespace WindowsSystem_Backend.Controllers
             };
 
             // TODO: AddLibraryAsync(library)
-            // _dbContext.Libraries.Add(library);
-            // await _dbContext.SaveChangesAsync();
             await _writeToDataBase.AddLibraryAsync(library);
 
-            var libraryDto = bl.BlLibrary.GetLibraryDTOs(library, new(), new());
+            var libraryDto = bl.BlLibrary.GetLibraryDTOs(library, new List<Movie> { }, new List<TvSeries> { });
 
             return Ok(libraryDto);
         }

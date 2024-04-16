@@ -324,7 +324,7 @@ namespace WindowsSystem_Backend.Controllers
 
         // PUT - api/libraries/{id}
         [HttpPut]
-        public async Task<IActionResult> UpdateLibrary(int id, CreateLibraryDto libraryDto)
+        public async Task<ActionResult<GetLibraryDto>> UpdateLibrary(int id, CreateLibraryDto libraryDto)
         {
             if (_dbContext == null)
             {
@@ -343,7 +343,9 @@ namespace WindowsSystem_Backend.Controllers
 
             await _writeToDataBase.UpdateLibraryAsync(library);
 
-            return Ok(libraryDto);
+            var getLibraryDto = bl.BlLibrary.GetLibraryDTOs(library, new List<Movie> { }, new List<TvSeries> { });
+
+            return Ok(getLibraryDto);
         }
 
         // DELETE - api/libraries/{id}

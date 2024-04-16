@@ -126,36 +126,6 @@ namespace WindowsSystem_Backend.BL
                 Time = time
             };
         }
-
-        private static (int?, int?) GetYearFromJson(string year) 
-        {
-            // example 1: "Year": "2021–2023" -> (2021, 2023)
-            // example 2: "Year": "2012–2020" -> (2012, 2020)
-            // example 3: "Year": "2015–" -> (2015, null)
-            // example 4: "Year": "2013" -> (2013, null)
-            int? startYear = null;
-            int? endYear = null;
-
-            if (year.Contains("–"))
-            {
-            string[] numbers = year.Split('–');
-            if (int.TryParse(numbers[0], out int start))
-            {
-                startYear = start;
-            }
-            if (numbers.Length > 1 && int.TryParse(numbers[1], out int end))
-            {
-                endYear = end;
-            }
-            }
-            else if (int.TryParse(year, out int singleYear))
-            {
-            startYear = singleYear;
-            }
-
-            return (startYear, endYear);
-        }
-
         public static DO.TvSeries? GetSeriesResult(string json)
         {
             var seriesResult = JsonConvert.DeserializeObject<SeriesResult>(json);
@@ -167,7 +137,7 @@ namespace WindowsSystem_Backend.BL
 
             // parsing the year for movie
             // Split the string at the hyphen and store results in an array
-            (int? startYear, int? endYear) = GetYearFromJson(seriesResult.Year ?? "");
+            string years = seriesResult.Year ?? "";
 
             // parsing the rating for movie
             if (!double.TryParse(seriesResult.ImdbRating, out double rating))
@@ -191,8 +161,7 @@ namespace WindowsSystem_Backend.BL
                 Title = seriesResult.Title,
                 Genre = seriesResult.Genre,
                 PosterURL = seriesResult.Poster,
-                StartingYear = startYear,
-                EndingYear = endYear,
+                Years = years,
                 TotalSeasons = totalSeasons,
                 ImdbID = seriesResult.ImdbID,
                 Rating = rating,

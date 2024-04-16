@@ -14,7 +14,7 @@ namespace WindowsSystem_Backend.BL
                 Title = series.Title,
                 ImdbID = series.ImdbID,
                 Poster = series.PosterURL,
-                Year = $"{series.StartingYear}-{series.EndingYear}",
+                Year = series.Years,
                 Type = "series",
             };
         }
@@ -28,8 +28,7 @@ namespace WindowsSystem_Backend.BL
                 Genre = series.Genre,
                 PosterURL = series.PosterURL,
                 Rating = series.Rating,
-                StartingYear = series.StartingYear,
-                EndingYear = series.EndingYear,
+                Years = series.Years,
                 TotalSeasons = series.TotalSeasons,
                 ImdbID = series.ImdbID,
                 Time = series.Time

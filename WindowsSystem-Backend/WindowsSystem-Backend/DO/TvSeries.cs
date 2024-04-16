@@ -15,10 +15,8 @@ namespace WindowsSystem_Backend.DO
 
         public double Rating { get; set; }
 
-        public int? StartingYear { get; set; }
-
-        public int? EndingYear { get; set; }
-
+        public string? Years { get; set; }
+        
         public int? TotalSeasons { get; set; }
 
         public string? ImdbID { get; set; }

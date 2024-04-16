@@ -7,26 +7,22 @@ namespace WindowsSystem_Backend.BL
     {
         public  IEnumerable<MediaDto>? GetMovieObjFromJson(string json)
         {
-            var jsonMovieDeserialization = new JsonMediaDeserialization();
-            return jsonMovieDeserialization.GetSearchResults(json, "movie");
+            return JsonMediaDeserialization.GetSearchResults(json, "movie");
         }
 
         public IEnumerable<MediaDto>? GetTvSeriesObjFromJson(string json) 
         {
-            var jsonTvSeriesDeserialization = new JsonMediaDeserialization();
-            return jsonTvSeriesDeserialization.GetSearchResults(json, "serie");
+            return JsonMediaDeserialization.GetSearchResults(json, "serie");
         }
 
         public  DO.Movie? GetMovieFromJson(string json)
         {
-            var jsonMovieDeserialization = new JsonMediaDeserialization();
-            return jsonMovieDeserialization.GetMovieResult(json);
+            return JsonMediaDeserialization.GetMovieResult(json);
         }
 
         public  DO.TvSeries? GetTvSeriesFromJson(string json)
         {
-            var jsonSeriesDeserialization = new JsonMediaDeserialization();
-            return jsonSeriesDeserialization.GetSeriesResult(json);
+            return JsonMediaDeserialization.GetSeriesResult(json);
         }
     }
 
@@ -68,9 +64,9 @@ namespace WindowsSystem_Backend.BL
         public string? TotalSeasons { get; set; }
     }
 
-    internal class JsonMediaDeserialization
+    internal static class JsonMediaDeserialization
     {
-        public IEnumerable<MediaDto>? GetSearchResults(string json, string type)
+        public static IEnumerable<MediaDto>? GetSearchResults(string json, string type)
         {
             var searchResponse = JsonConvert.DeserializeObject<SearchResponse>(json);
 
@@ -91,7 +87,7 @@ namespace WindowsSystem_Backend.BL
                 ).ToList();
         }
 
-        public DO.Movie? GetMovieResult(string json)
+        public static DO.Movie? GetMovieResult(string json)
         {
             var movieResult = JsonConvert.DeserializeObject<MovieResult>(json);
 
@@ -131,7 +127,7 @@ namespace WindowsSystem_Backend.BL
             };
         }
 
-        public DO.TvSeries? GetSeriesResult(string json)
+        public static DO.TvSeries? GetSeriesResult(string json)
         {
             var seriesResult = JsonConvert.DeserializeObject<SeriesResult>(json);
 
@@ -145,18 +141,25 @@ namespace WindowsSystem_Backend.BL
             string years = seriesResult.Year ?? "";
             string[] numbers = years.Split('-');
 
+            int? startYear = null;
+            int? endYear = null;
 
-            int startYear;
-            int endYear = 0;
-            if (!int.TryParse(numbers[0], out startYear))
+            bool success = int.TryParse(numbers[0], out int start);
+            if (success)
             {
-                startYear = 0;
+                startYear = start;
             }
 
-            if(numbers.Length > 1)
+            if(numbers.Length == 1)
             {
-                if (!int.TryParse(numbers[1], out endYear)) {
-                    endYear = 0;
+                endYear = null;
+            }
+            else
+            {
+                success = int.TryParse(numbers[1], out int end);
+                if (success)
+                {
+                    endYear = end;
                 }
             }
 
@@ -172,9 +175,8 @@ namespace WindowsSystem_Backend.BL
                 time = 0;
             }
 
-            int totalSeasons;
-            if (!int.TryParse(seriesResult.TotalSeasons, out totalSeasons)) 
-            { 
+            if (!int.TryParse(seriesResult.TotalSeasons, out int totalSeasons))
+            {
                 totalSeasons = 0;
             }
 

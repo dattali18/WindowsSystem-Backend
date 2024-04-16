@@ -41,14 +41,8 @@ namespace WindowsSystem_Backend.Controllers
                 return NotFound();
             }
 
-            // TODO: GetLibrariesWithMediasAsync()
-            // var libraries = await _dbContext.Libraries
-            //     .Include(l => l.Movies)
-            //     .Include(l => l.TvSeries)
-            //     .ToListAsync();
             var libraries = await _readFromDataBase.GetLibrariesAsync();
 
-            // TODO: move that into a function in the BL
             List<GetLibraryDto> librariesDto = (
                     from library in libraries
                     select bl.BlLibrary.GetLibraryDTOs(library, library.Movies, library.TvSeries)
@@ -65,11 +59,7 @@ namespace WindowsSystem_Backend.Controllers
             {
                 return NotFound();
             }
-            // TODO: GetLibraryByIdWithMediasAsync()
-            // var library = await _dbContext.Libraries
-            //     .Include(l => l.Movies)
-            //     .Include(l => l.TvSeries)
-            //     .FirstOrDefaultAsync(i => i.Id == id);
+
             var library = await _readFromDataBase.GetLibraryByIdWithMediasAsync(id);
 
             if (library == null)
@@ -93,10 +83,6 @@ namespace WindowsSystem_Backend.Controllers
                 return NotFound();
             }
 
-            // TODO: GetLibraryByIdWithMoviesAsync()
-            // var library = await _dbContext.Libraries
-            //     .Include(l => l.Movies)
-            //     .FirstOrDefaultAsync(i => i.Id == id);
             var library = await _readFromDataBase.GetLibraryByIdWithMoviesAsync(id);
 
             if (library == null)
@@ -106,7 +92,6 @@ namespace WindowsSystem_Backend.Controllers
 
             var movies = library.Movies;
 
-            // TODO: move that into a function in the BL
             List<MediaDto> media = (
                 from movie in movies
                 select bl.BlMovie.GetMediaFromMovie(movie)
@@ -124,10 +109,6 @@ namespace WindowsSystem_Backend.Controllers
                 return NotFound();
             }
 
-            // TODO: GetLibraryByIdWithTvSeriesAsync()
-            // var library = await _dbContext.Libraries
-            //     .Include(l => l.TvSeries)
-            //     .FirstOrDefaultAsync(i => i.Id == id);
             var library = await _readFromDataBase.GetLibraryByIdWithTvSeriesAsync(id);
 
             if (library == null)
@@ -137,7 +118,6 @@ namespace WindowsSystem_Backend.Controllers
 
             var series = library.TvSeries;
 
-            // TODO: move that into a function in the BL
             List<MediaDto> media = (
                 from serie in series
                 select bl.BlTvSeries.GetMediaFromTvSeries(serie)
@@ -151,19 +131,25 @@ namespace WindowsSystem_Backend.Controllers
         public async Task<ActionResult<IEnumerable<GetLibraryDto>>> GetLibraryByTitle(string name)
         {
             // Get the libraries with a name matching the search term
-            // TODO: GetLibrariesByNameAsync(name)
-            // var libraries = await _dbContext.Libraries
-            //     .Where(l => l.Name == null ? false : l.Name.ToLower().Contains(name.ToLower()))
-            //     .ToListAsync();
             var libraries = await _readFromDataBase.GetLibrariesByNameAsync(name);
             libraries = libraries.ToList();
 
-            // if (libraries.Any())
-            // {
-            //     return NotFound();
-            // }
+            var librariesDto = (
+                    from library in libraries
+                    select bl.BlLibrary.GetLibraryDTOs(library, new List<Movie> { }, new List<TvSeries> { })
+                ).ToList();
 
-            // TODO: move that into a function in the BL
+            return Ok(librariesDto);
+        }
+
+        // GET - /api/libraries/search/?name=<name>&keywords=<keywords>
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<GetLibraryDto>>> GetLibraryByTitleAndKeywords(string name, string keywords)
+        {
+            // Get the libraries with a name matching the search term
+            var libraries = await _readFromDataBase.GetLibrariesByNameKeywordsAsync(name, keywords);
+            libraries = libraries.ToList();
+
             var librariesDto = (
                     from library in libraries
                     select bl.BlLibrary.GetLibraryDTOs(library, new List<Movie> { }, new List<TvSeries> { })
@@ -187,7 +173,6 @@ namespace WindowsSystem_Backend.Controllers
                 Keywords = createLibraryDto.Keywords
             };
 
-            // TODO: AddLibraryAsync(library)
             await _writeToDataBase.AddLibraryAsync(library);
 
             var libraryDto = bl.BlLibrary.GetLibraryDTOs(library, new List<Movie> { }, new List<TvSeries> { });
@@ -204,10 +189,6 @@ namespace WindowsSystem_Backend.Controllers
                 return NotFound();
             }
 
-            // TODO: GetLibraryByIdWithMoviesAsync()
-            // var library = await _dbContext.Libraries
-            //     .Include(l => l.Movies)
-            //     .FirstOrDefaultAsync(i => i.Id == libraryId);
             var library = await _readFromDataBase.GetLibraryByIdWithMoviesAsync(libraryId);
 
             if (library == null)
@@ -226,8 +207,6 @@ namespace WindowsSystem_Backend.Controllers
             }
 
             // Check if the movie already exists in the local database
-            // TODO: GetMovieByImdbIDAsync(imdbID)
-            // var existingMovie = await _dbContext.Movies.FirstOrDefaultAsync(movie => movie.ImdbID == imdbID);
             var existingMovie = await _readFromDataBase.GetMovieByImdbIdAsync(imdbID);
 
             if (existingMovie == null)
@@ -240,15 +219,10 @@ namespace WindowsSystem_Backend.Controllers
                     return NotFound();
                 }
 
-                // TODO: AddMovieAsync(movieFromService)
-                // _dbContext.Movies.Add(movieFromService);
                 await _writeToDataBase.AddMovieAsync(movieFromService);
                 existingMovie = movieFromService;
             }  
             
-            // TODO: UpdateLibraryAddMovieAsync(library, existingMovie)
-            // library.Movies.Add(existingMovie);
-            // await _dbContext.SaveChangesAsync();
             await _writeToDataBase.UpdateLibraryAddMovieAsync(library, existingMovie);
 
             var media = bl.BlMovie.GetMediaFromMovie(existingMovie);
@@ -264,10 +238,6 @@ namespace WindowsSystem_Backend.Controllers
                 return NotFound();
             }
 
-            // TODO: GetLibraryByIdWithMoviesAsync()
-            // var library = await _dbContext.Libraries
-            //     .Include(l => l.Movies)
-            //     .FirstOrDefaultAsync(i => i.Id == libraryId);
             var library = await _readFromDataBase.GetLibraryByIdWithMoviesAsync(libraryId);
 
             if (library == null)
@@ -282,9 +252,6 @@ namespace WindowsSystem_Backend.Controllers
                 return NotFound();
             }
 
-            // TODO: UpdateLibraryRemoveMovieAsync(library, movie)
-            // library.Movies.Remove(movie);
-            // await _dbContext.SaveChangesAsync();
             await _writeToDataBase.UpdateLibraryRemoveMovieAsync(library, movie);
 
             return NoContent();
@@ -299,10 +266,6 @@ namespace WindowsSystem_Backend.Controllers
                 return NotFound();
             }
 
-            // TODO: GetLibraryByIdWithTvSeriesAsync()
-            // var library = await _dbContext.Libraries
-            //     .Include(l => l.TvSeries)
-            //     .FirstOrDefaultAsync(i => i.Id == libraryId);
             var library = await _readFromDataBase.GetLibraryByIdWithTvSeriesAsync(libraryId);
 
             if (library == null)
@@ -310,9 +273,6 @@ namespace WindowsSystem_Backend.Controllers
                 return NotFound();
             }
 
-            // Check if the movie already exists in the local database
-            // TODO: GetTvSerieByImdbIDAsync(imdbID)
-            // var existingSeries = await _dbContext.TvSeries.FirstOrDefaultAsync(movie => movie.ImdbID == imdbID);
             var existingSeries = await _readFromDataBase.GetTvSerieByImdbIdAsync(imdbID);
 
             if (existingSeries == null)
@@ -325,16 +285,10 @@ namespace WindowsSystem_Backend.Controllers
                     return NotFound();
                 }
 
-                // TODO: AddTvSerieAsync(series)
-                // _dbContext.TvSeries.Add(series);
-                // await _dbContext.SaveChangesAsync();
                 await _writeToDataBase.AddTvSerieAsync(series);
                 existingSeries = series;
             }
 
-            // TODO: UpdateLibraryAddTvSerieAsync(library, existingSeries)
-            // library.TvSeries.Add(existingSeries);
-            // await _dbContext.SaveChangesAsync();
             await _writeToDataBase.UpdateLibraryAddTvSerieAsync(library, existingSeries);
 
             var seriesDto = bl.BlTvSeries.GetMediaFromTvSeries(existingSeries);
@@ -349,10 +303,6 @@ namespace WindowsSystem_Backend.Controllers
                 return NotFound();
             }
 
-            // TODO: GetLibraryByIdWithTvSeriesAsync()
-            // var library = await _dbContext.Libraries
-            //     .Include(l => l.TvSeries)
-            //     .FirstOrDefaultAsync(i => i.Id == libraryId);
             var library = await _readFromDataBase.GetLibraryByIdWithTvSeriesAsync(libraryId);
 
             if (library == null)
@@ -367,9 +317,6 @@ namespace WindowsSystem_Backend.Controllers
                 return NotFound();
             }
 
-            // TODO: UpdateLibraryRemoveTvSerieAsync(library, series)
-            // library.TvSeries.Remove(series);
-            // await _dbContext.SaveChangesAsync();
             await _writeToDataBase.UpdateLibraryRemoveTvSerieAsync(library, series);
 
             return NoContent();
@@ -384,8 +331,6 @@ namespace WindowsSystem_Backend.Controllers
                 return NotFound();
             }
 
-            // TODO: GetLibraryByIdAsync(id)
-            // var library = await _dbContext.Libraries.FindAsync(id);
             var library = await _readFromDataBase.GetLibraryByIdAsync(id);
 
             if (library == null)
@@ -396,8 +341,6 @@ namespace WindowsSystem_Backend.Controllers
             library.Name = libraryDto.Name;
             library.Keywords = libraryDto.Keywords;
 
-            // TODO: UpdateLibraryAsync(library)
-            // await _dbContext.SaveChangesAsync();
             await _writeToDataBase.UpdateLibraryAsync(library);
 
             return Ok(libraryDto);
@@ -412,11 +355,6 @@ namespace WindowsSystem_Backend.Controllers
                 return NotFound();
             }
 
-            // TODO: GetLibraryByIdAsync(id)
-            // var library = await _dbContext.Libraries
-            //         .Include(l => l.Movies)
-            //         .Include(l => l.TvSeries)
-            //         .FirstOrDefaultAsync(i => i.Id == id);
             var library = await _readFromDataBase.GetLibraryByIdWithMediasAsync(id);
                     
             if (library == null)
@@ -424,12 +362,6 @@ namespace WindowsSystem_Backend.Controllers
                 return NotFound();
             }
 
-            // TODO: DeleteLibraryAsync(id)
-            // library.Movies.RemoveAll(l => true);
-            // library.TvSeries.RemoveAll(l => true);
-
-            // _dbContext.Libraries.Remove(library);
-            // await _dbContext.SaveChangesAsync();
             await _writeToDataBase.DeleteLibraryAsync(library);
 
             return NoContent();

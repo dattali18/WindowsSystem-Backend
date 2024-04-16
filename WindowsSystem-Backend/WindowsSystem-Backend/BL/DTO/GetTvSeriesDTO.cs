@@ -1,6 +1,6 @@
 ﻿namespace WindowsSystem_Backend.BL.DTO
 {
-    public class GetTvSeriesDTO
+    public class GetTvSeriesDto
     {
         public int Id { get; set; }
 
@@ -10,7 +10,7 @@
 
         public string? PosterURL { get; set; }
 
-        public double Rating { get; set; }
+        public double? Rating { get; set; }
 
         public int? StartingYear { get; set; }
 

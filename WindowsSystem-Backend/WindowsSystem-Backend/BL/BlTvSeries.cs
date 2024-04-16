@@ -8,6 +8,7 @@ namespace WindowsSystem_Backend.BL
     {
         public MediaDto GetMediaFromTvSeries(TvSeries series)
         {
+            // TODO: convert the Year acording to the different possible case
             return new MediaDto
             {
                 Title = series.Title,
@@ -18,9 +19,9 @@ namespace WindowsSystem_Backend.BL
             };
         }
 
-        public GetTvSeriesDTO GetTvSeriesDtoFromTvSeries(TvSeries series) 
+        public GetTvSeriesDto GetTvSeriesDtoFromTvSeries(TvSeries series) 
         {
-            return new GetTvSeriesDTO
+            return new GetTvSeriesDto
             {
                 Id = series.Id,
                 Title = series.Title,

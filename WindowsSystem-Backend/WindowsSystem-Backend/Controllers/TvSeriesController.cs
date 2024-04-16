@@ -43,7 +43,7 @@ namespace WindowsSystem_Backend.Controllers
         /// </summary>
         /// <returns>A list of TvSeriesDTOs</returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GetTvSeriesDTO>>> GetTvSeries()
+        public async Task<ActionResult<IEnumerable<GetTvSeriesDto>>> GetTvSeries()
         {
 
             var Series = await _readFromDataBase.GetTvSeriesAsync();
@@ -63,7 +63,7 @@ namespace WindowsSystem_Backend.Controllers
         /// <param name="id">The ID of the series.</param>
         /// <returns>The series DTO.</returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<GetTvSeriesDTO>> GetTvSeries(int id)
+        public async Task<ActionResult<GetTvSeriesDto>> GetTvSeries(int id)
         {
             var series = await _readFromDataBase.GetTvSerieByIdAsync(id);
 
@@ -84,7 +84,7 @@ namespace WindowsSystem_Backend.Controllers
         /// <param name="imdbID">The IMDb ID of the series.</param>
         /// <returns>The series DTO.</returns>
         [HttpGet("search/{imdbID}")]
-        public async Task<ActionResult<GetTvSeriesDTO>> GetTvSeries(string imdbID)
+        public async Task<ActionResult<GetTvSeriesDto>> GetTvSeries(string imdbID)
         {
             var series = await bl.BlTvSeries.GetTvSeriesByImdbID(imdbID);
 
@@ -120,7 +120,7 @@ namespace WindowsSystem_Backend.Controllers
         /// <param name="imdbID">The IMDb ID of the series.</param>
         /// <returns>The added series DTO.</returns>
         [HttpPost]
-        public async Task<ActionResult<GetTvSeriesDTO>> PostTvSeries(string imdbID)
+        public async Task<ActionResult<GetTvSeriesDto>> PostTvSeries(string imdbID)
         {
             var existingSeries = await _readFromDataBase.GetTvSerieByImdbIdAsync(imdbID);
 

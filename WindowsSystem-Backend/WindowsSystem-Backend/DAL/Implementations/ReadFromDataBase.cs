@@ -110,5 +110,14 @@ namespace WindowsSystem_Backend.DAL.Implementations
                 .FirstOrDefaultAsync(l => l.Id == id);
             return library;
         }
+
+        public async Task<IEnumerable<Library>> GetLibrariesByNameKeywordsAsync(string name, string keywords)
+        {
+            var libraries = await _dbContext.Libraries
+                .Where(l => l.Name == null ? false : l.Name.ToLower().Contains(name.ToLower()))
+                .Where(l => l.Keywords == null ? false : l.Keywords.ToLower().Contains(keywords.ToLower()))
+                .ToListAsync();
+            return libraries;
+        }
     }
 }

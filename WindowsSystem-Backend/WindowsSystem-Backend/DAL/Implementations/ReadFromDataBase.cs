@@ -58,7 +58,10 @@ namespace WindowsSystem_Backend.DAL.Implementations
 
         public async Task<IEnumerable<Library>> GetLibrariesAsync()
         {
-            var libraries = await _dbContext.Libraries.ToListAsync();
+            var libraries = await _dbContext.Libraries
+                .Include(l => l.Movies)
+                .Include(l => l.TvSeries)
+                .ToListAsync();
             return libraries;
         }
 
@@ -75,6 +78,8 @@ namespace WindowsSystem_Backend.DAL.Implementations
         {
             var libraries = await _dbContext.Libraries
                 .Where(l => l.Name == null ? false : l.Name.ToLower().Contains(name.ToLower()))
+                .Include(l => l.Movies)
+                .Include(l => l.TvSeries)
                 .ToListAsync();
             return libraries;
         }

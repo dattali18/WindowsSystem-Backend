@@ -9,7 +9,7 @@ namespace WindowsSystem_Backend.BL
     public class BlLibrary
     {
         
-        public GetLibraryDto GetLibraryDTOs(DO.Library library, List<Movie> movies, List<TvSeries> tvSeries)
+        public GetLibraryDto GetLibraryDTOs(DO.Library library, IEnumerable<Movie> movies, IEnumerable<TvSeries> tvSeries)
         {
             var blMovie = new BlMovie();
             var blTvSeries = new BlTvSeries();

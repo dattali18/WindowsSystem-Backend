@@ -67,10 +67,10 @@ namespace WindowsSystem_Backend.Controllers
                 return NotFound();
             }
 
-            List<Movie> movies = library.Movies;
-            List<TvSeries> tvSeries = library.TvSeries;
+            // List<Movie> movies = library.Movies;
+            // List<TvSeries> tvSeries = library.TvSeries;
 
-            var libraryDto = bl.BlLibrary.GetLibraryDTOs(library, movies, tvSeries);
+            var libraryDto = bl.BlLibrary.GetLibraryDTOs(library, library.Movies, library.TvSeries);
             return Ok(libraryDto);
         }
 
@@ -136,7 +136,7 @@ namespace WindowsSystem_Backend.Controllers
 
             var librariesDto = (
                     from library in libraries
-                    select bl.BlLibrary.GetLibraryDTOs(library, new List<Movie> { }, new List<TvSeries> { })
+                    select bl.BlLibrary.GetLibraryDTOs(library, library.Movies, library.TvSeries)
                 ).ToList();
 
             return Ok(librariesDto);

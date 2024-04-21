@@ -12,7 +12,7 @@ namespace WindowsSystem_Backend
             
             // Connecting to DB
             builder.Services.AddDbContext<DataContext>(options =>
-               options.UseSqlServer(builder.Configuration.GetConnectionString("AppContext")));
+               options.UseSqlite(builder.Configuration.GetConnectionString("localDb")));
 
             // Add services to the container.
 

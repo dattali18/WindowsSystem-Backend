@@ -2,7 +2,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WindowsSystem_Backend.DAL;
@@ -12,25 +11,21 @@ using WindowsSystem_Backend.DAL;
 namespace WindowsSystem_Backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240318155330_migration-v1.0")]
-    partial class migrationv10
+    [Migration("20240421133208_InitMigration")]
+    partial class InitMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.28")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
-
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.28");
 
             modelBuilder.Entity("LibraryMovie", b =>
                 {
                     b.Property<int>("LibrariesId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("MoviesId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("LibrariesId", "MoviesId");
 
@@ -42,10 +37,10 @@ namespace WindowsSystem_Backend.Migrations
             modelBuilder.Entity("LibraryTvSeries", b =>
                 {
                     b.Property<int>("LibrariesId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("TvSeriesId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("LibrariesId", "TvSeriesId");
 
@@ -58,15 +53,13 @@ namespace WindowsSystem_Backend.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Keywords")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -77,36 +70,33 @@ namespace WindowsSystem_Backend.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Genre")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ImdbID")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("PosterURL")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<double>("Rating")
-                        .HasColumnType("float");
+                        .HasColumnType("REAL");
 
                     b.Property<int?>("Time")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("Year")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ImdbID")
-                        .IsUnique()
-                        .HasFilter("[ImdbID] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Movies");
                 });
@@ -115,42 +105,36 @@ namespace WindowsSystem_Backend.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int?>("EndingYear")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Genre")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ImdbID")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("PosterURL")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<double>("Rating")
-                        .HasColumnType("float");
-
-                    b.Property<int?>("StartingYear")
-                        .HasColumnType("int");
+                        .HasColumnType("REAL");
 
                     b.Property<int?>("Time")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("TotalSeasons")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Years")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ImdbID")
-                        .IsUnique()
-                        .HasFilter("[ImdbID] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("TvSeries");
                 });

@@ -4,7 +4,7 @@
 
 namespace WindowsSystem_Backend.Migrations
 {
-    public partial class migrationv10 : Migration
+    public partial class InitMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,10 +12,10 @@ namespace WindowsSystem_Backend.Migrations
                 name: "Libraries",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Keywords = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    Keywords = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -26,15 +26,15 @@ namespace WindowsSystem_Backend.Migrations
                 name: "Movies",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Genre = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PosterURL = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Rating = table.Column<double>(type: "float", nullable: false),
-                    Year = table.Column<int>(type: "int", nullable: true),
-                    ImdbID = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Time = table.Column<int>(type: "int", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Title = table.Column<string>(type: "TEXT", nullable: true),
+                    Genre = table.Column<string>(type: "TEXT", nullable: true),
+                    PosterURL = table.Column<string>(type: "TEXT", nullable: true),
+                    Rating = table.Column<double>(type: "REAL", nullable: false),
+                    Year = table.Column<int>(type: "INTEGER", nullable: true),
+                    ImdbID = table.Column<string>(type: "TEXT", nullable: true),
+                    Time = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -45,17 +45,16 @@ namespace WindowsSystem_Backend.Migrations
                 name: "TvSeries",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Genre = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PosterURL = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Rating = table.Column<double>(type: "float", nullable: false),
-                    StartingYear = table.Column<int>(type: "int", nullable: true),
-                    EndingYear = table.Column<int>(type: "int", nullable: true),
-                    TotalSeasons = table.Column<int>(type: "int", nullable: true),
-                    ImdbID = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Time = table.Column<int>(type: "int", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Title = table.Column<string>(type: "TEXT", nullable: true),
+                    Genre = table.Column<string>(type: "TEXT", nullable: true),
+                    PosterURL = table.Column<string>(type: "TEXT", nullable: true),
+                    Rating = table.Column<double>(type: "REAL", nullable: false),
+                    Years = table.Column<string>(type: "TEXT", nullable: true),
+                    TotalSeasons = table.Column<int>(type: "INTEGER", nullable: true),
+                    ImdbID = table.Column<string>(type: "TEXT", nullable: true),
+                    Time = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -66,8 +65,8 @@ namespace WindowsSystem_Backend.Migrations
                 name: "LibraryMovie",
                 columns: table => new
                 {
-                    LibrariesId = table.Column<int>(type: "int", nullable: false),
-                    MoviesId = table.Column<int>(type: "int", nullable: false)
+                    LibrariesId = table.Column<int>(type: "INTEGER", nullable: false),
+                    MoviesId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -90,8 +89,8 @@ namespace WindowsSystem_Backend.Migrations
                 name: "LibraryTvSeries",
                 columns: table => new
                 {
-                    LibrariesId = table.Column<int>(type: "int", nullable: false),
-                    TvSeriesId = table.Column<int>(type: "int", nullable: false)
+                    LibrariesId = table.Column<int>(type: "INTEGER", nullable: false),
+                    TvSeriesId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -124,15 +123,13 @@ namespace WindowsSystem_Backend.Migrations
                 name: "IX_Movies_ImdbID",
                 table: "Movies",
                 column: "ImdbID",
-                unique: true,
-                filter: "[ImdbID] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_TvSeries_ImdbID",
                 table: "TvSeries",
                 column: "ImdbID",
-                unique: true,
-                filter: "[ImdbID] IS NOT NULL");
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

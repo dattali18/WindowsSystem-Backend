@@ -192,7 +192,8 @@ then install all the needed packages using `pip`
 pip install -r requirements.txt
 ```
 
-> [!NOTE] : you'll might need to use a virtual environment in order to run the `pip` commend.
+> [!NOTE]: -
+> you'll might need to use a virtual environment in order to run the `pip` commend.
 
 and in the backend install 3 libraries to run the program:
 
@@ -201,7 +202,8 @@ and in the backend install 3 libraries to run the program:
 - `Microsoft.EntityFrameworkCore.Tools`
 - `Microsoft.EntityFrameworkCore.Sqlite`
 
-> [!TIP] : on `MacOs` you can still run the backend using `SQLite` but on `Windows` you'll need to use `SQLServer` to run the backend.
+> [!TIP]: -
+> on `MacOs` you can still run the backend using `SQLite` but on `Windows` you'll need to use `SQLServer` to run the backend.
 > use `dotnet add package <package_name>` to add the package to the project.
 > then run the migration using `dotnet ef migrations add <migration_name>` and then `dotnet ef database update` to update the database.
 > then run the project using `dotnet run`

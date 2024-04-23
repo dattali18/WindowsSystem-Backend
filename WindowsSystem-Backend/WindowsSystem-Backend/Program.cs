@@ -13,11 +13,11 @@ namespace WindowsSystem_Backend
             // Connecting to DB
             // FIXME: Change the connection string to your own
 
-            // NOTE: for macos use this
+            // INFO: for macos use this
             // builder.Services.AddDbContext<DataContext>(options =>
             //    options.UseSqlite(builder.Configuration.GetConnectionString("localDb")));
 
-            // NOTE: for windows use this
+            // INFO: for windows use this
             builder.Services.AddDbContext<DataContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("AppContext")));
 

@@ -9,17 +9,18 @@ namespace WindowsSystem_Backend
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            
+
+            // WARNING:
             // Connecting to DB
             // FIXME: Change the connection string to your own
 
             // INFO: for macos use this
-            // builder.Services.AddDbContext<DataContext>(options =>
-            //    options.UseSqlite(builder.Configuration.GetConnectionString("localDb")));
+            builder.Services.AddDbContext<DataContext>(options =>
+               options.UseSqlite(builder.Configuration.GetConnectionString("localDb")));
 
             // INFO: for windows use this
-            builder.Services.AddDbContext<DataContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("AppContext")));
+            // builder.Services.AddDbContext<DataContext>(options =>
+            //    options.UseSqlServer(builder.Configuration.GetConnectionString("AppContext")));
 
             // Add services to the container.
 

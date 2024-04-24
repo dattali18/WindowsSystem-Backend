@@ -114,8 +114,17 @@ if __name__ == "__main__":
 	main()
 ```
 
-### Screen Shot (`Mac OS`)
-![Libraries Window](https://github.com/dattali18/WindowsSystem-Frontend/blob/main/ScreenShots/libraries_window_screen_shot.png)
+## Screen Shot (`Mac OS`)
+
+### Libraries Window
+![Libraries Window](/ScreenShots/libraries_window.png)
+### Library Window
+![Libraries Window](/ScreenShots/library_window.png)
+### Media Window
+![Libraries Window](/ScreenShots/media_window.png)
+### Update Window
+![Libraries Window](/ScreenShots/update_window.png)
+
 
 # Backend - ASP\.NET
 
@@ -200,10 +209,9 @@ and in the backend install 3 libraries to run the program:
 - `Microsoft.EntityFrameworkCore`
 - `Microsoft.EntityFrameworkCore.SqlServer`
 - `Microsoft.EntityFrameworkCore.Tools`
+> [!note]
+> this is for `Windows` users, for `MacOs` users you'll need to use `SQLite` instead of `SQLServer` and you'll need to install the following libraries:
 - `Microsoft.EntityFrameworkCore.Sqlite`
-
-> [!tip]
-> TIP
 
 
 > [!tip]

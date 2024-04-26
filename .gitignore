@@ -3,6 +3,8 @@
 .vs/
 WindowsSystem-Backend/.vs/
 
+*.db
+
 
 # Exclude files used for debugging or running
 .dll

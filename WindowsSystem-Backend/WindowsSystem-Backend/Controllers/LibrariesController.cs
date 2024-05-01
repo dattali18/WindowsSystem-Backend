@@ -152,7 +152,7 @@ namespace WindowsSystem_Backend.Controllers
 
             var librariesDto = (
                     from library in libraries
-                    select bl.BlLibrary.GetLibraryDTOs(library, new List<Movie> { }, new List<TvSeries> { })
+                    select bl.BlLibrary.GetLibraryDTOs(library, library.Movies, library.TvSeries)
                 ).ToList();
 
             return Ok(librariesDto);
@@ -343,7 +343,7 @@ namespace WindowsSystem_Backend.Controllers
 
             await _writeToDataBase.UpdateLibraryAsync(library);
 
-            var getLibraryDto = bl.BlLibrary.GetLibraryDTOs(library, new List<Movie> { }, new List<TvSeries> { });
+            var getLibraryDto = bl.BlLibrary.GetLibraryDTOs(library, library.Movies, library.TvSeries);
 
             return Ok(getLibraryDto);
         }

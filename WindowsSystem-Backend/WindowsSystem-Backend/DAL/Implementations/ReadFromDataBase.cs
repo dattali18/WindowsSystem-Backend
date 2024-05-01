@@ -121,6 +121,8 @@ namespace WindowsSystem_Backend.DAL.Implementations
             var libraries = await _dbContext.Libraries
                 .Where(l => l.Name == null ? false : l.Name.ToLower().Contains(name.ToLower()))
                 .Where(l => l.Keywords == null ? false : l.Keywords.ToLower().Contains(keywords.ToLower()))
+                .Include(l => l.Movies)
+                .Include(l => l.TvSeries)
                 .ToListAsync();
             return libraries;
         }
